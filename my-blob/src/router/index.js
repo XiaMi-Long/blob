@@ -4,10 +4,16 @@ const routes = [
   {
     path: "/",
     name: "home",
-    component: {
-      default: import("../views/Body/Blob/index.vue"),
-      Breadcrumb: import("../views/Breadcrumb/index.vue"),
-    },
+    component: import("../views/index.vue"),
+    children: [
+      {
+        path: "/home",
+        components: {
+          default: import("../views/Body/Blob/index.vue"),
+          BreadcrumbView: import("../views/Breadcrumb/index.vue"),
+        },
+      },
+    ],
   },
 ];
 
