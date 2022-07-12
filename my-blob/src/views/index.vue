@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-11 17:06:49
+ * @LastEditTime: 2022-07-11 23:27:40
 -->
 <template>
   <div class="home">
@@ -15,7 +15,7 @@
           name="BreadcrumbView"
         ></router-view>
       </n-layout-header>
-      <router-view class="view main-content"></router-view>
+      <router-view class="view main-content" name="main"></router-view>
     </n-layout>
   </div>
 </template>

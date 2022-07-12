@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-11 17:25:26
+ * @LastEditTime: 2022-07-11 23:06:21
 -->
 <template>
   <router-view></router-view>

@@ -1,8 +1,19 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: wwy
+ * @Date: 2022-07-11 15:56:14
+ * @LastEditors: wwy
+ * @LastEditTime: 2022-07-11 22:42:50
+-->
 <template>
   <div class="breadcrumb-container">
     <div class="logo-search">
       <Logo></Logo>
       <Input></Input>
+    </div>
+    <div class="page-title">
+      <Title></Title>
     </div>
   </div>
 </template>
@@ -11,12 +22,14 @@
 // import { h } from "vue";
 import Logo from "./Logo/index.vue";
 import Input from "./Input/index.vue";
+import Title from "./Title/index.vue";
 
 export default {
   name: "BreadcrumbView",
   components: {
     Logo,
     Input,
+    Title,
   },
 
   setup() {
@@ -38,7 +51,14 @@ export default {
   padding: 0 $view-padding;
 
   .logo-search {
-    width: 60%;
+    width: 50%;
+
+    display: flex;
+    align-items: center;
+  }
+
+  .page-title {
+    width: 50%;
 
     display: flex;
     align-items: center;
