@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 16:04:17
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-12 16:41:57
+ * @LastEditTime: 2022-07-12 16:55:29
 -->
 <template>
   <div>
@@ -14,8 +14,9 @@
         <BlobActivleView></BlobActivleView>
       </n-gi>
       <n-gi :span="8" class="blob-calendar-view">
-        <BlobCalendarView :timeValue="calendarValue"></BlobCalendarView
-      ></n-gi>
+        <BlobCalendarView :timeValue="calendarValue"></BlobCalendarView>
+        <BlobArchivesView></BlobArchivesView>
+      </n-gi>
     </n-grid>
   </div>
 </template>
@@ -24,6 +25,7 @@
 import BlobTitleView from "./Title/index.vue";
 import BlobActivleView from "./Acticle/index.vue";
 import BlobCalendarView from "./Calendar/index.vue";
+import BlobArchivesView from "./Archives/index.vue";
 import { ref } from "vue";
 
 export default {
@@ -32,6 +34,7 @@ export default {
     BlobTitleView,
     BlobActivleView,
     BlobCalendarView,
+    BlobArchivesView,
   },
 
   setup() {

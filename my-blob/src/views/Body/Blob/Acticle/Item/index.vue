@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-12 10:58:19
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-12 16:48:08
+ * @LastEditTime: 2022-07-12 17:26:31
 -->
 <template>
   <div class="blob-activle-text-box">
@@ -132,6 +132,11 @@ export default {
 
   .active-photo {
     height: 180px;
+
+    transition: transform 0.5s;
+    &:hover {
+      transform: scale(1.4);
+    }
   }
   .title-box {
     text-align: left;
@@ -210,9 +215,17 @@ export default {
 
   display: inline-block;
 
-  margin-bottom: 20px;
+  margin-bottom: $blob-acticle-margin;
 
   box-shadow: $card-shadow;
+}
+
+@media screen and (min-width: 1500px) {
+  .blob-activle-text-box {
+    .active-photo {
+      height: 250px;
+    }
+  }
 }
 
 @media screen and (max-width: 1000px) {

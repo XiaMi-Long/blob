@@ -39,6 +39,8 @@ export default {
 <style lang="scss" scoped>
 .blob-calendar-box {
   padding: 0 $view-padding 0 calc($view-padding / 2);
+
+  margin-bottom: $blob-acticle-margin;
 }
 
 .n-card {
