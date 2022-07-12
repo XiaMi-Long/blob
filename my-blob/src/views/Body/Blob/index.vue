@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 16:04:17
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-12 16:55:29
+ * @LastEditTime: 2022-07-12 17:52:17
 -->
 <template>
   <div>
@@ -16,6 +16,12 @@
       <n-gi :span="8" class="blob-calendar-view">
         <BlobCalendarView :timeValue="calendarValue"></BlobCalendarView>
         <BlobArchivesView></BlobArchivesView>
+        <BlobTagsView></BlobTagsView>
+      </n-gi>
+    </n-grid>
+    <n-grid x-gap="0" :cols="24">
+      <n-gi :span="24" class="blob-pagination-view">
+        <PaginationView margin="100px 0 70px 0 "></PaginationView>
       </n-gi>
     </n-grid>
   </div>
@@ -26,6 +32,9 @@ import BlobTitleView from "./Title/index.vue";
 import BlobActivleView from "./Acticle/index.vue";
 import BlobCalendarView from "./Calendar/index.vue";
 import BlobArchivesView from "./Archives/index.vue";
+import BlobTagsView from "./Tags/index.vue";
+import PaginationView from "@/components/Pagination/index.vue";
+
 import { ref } from "vue";
 
 export default {
@@ -35,6 +44,8 @@ export default {
     BlobActivleView,
     BlobCalendarView,
     BlobArchivesView,
+    BlobTagsView,
+    PaginationView,
   },
 
   setup() {
