@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-11 23:06:21
+ * @LastEditTime: 2022-07-12 16:45:14
 -->
 <template>
   <router-view></router-view>
@@ -19,5 +19,7 @@
   color: #2c3e50;
 
   box-sizing: content-box;
+
+  font-size: 1em;
 }
 </style>

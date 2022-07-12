@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-11 22:12:04
+ * @LastEditTime: 2022-07-12 15:30:56
  */
 import { createApp } from "vue";
 import App from "./App.vue";
@@ -20,9 +20,32 @@ import {
   NMenu,
   NLayout,
   NIcon,
+  NCard,
+  NGrid,
+  NGridItem,
+  NLayoutHeader,
+  NLayoutContent,
+  NRadio,
+  NEllipsis,
+  NAvatar,
 } from "naive-ui";
 
 const naive = create({
-  components: [NButton, NSpace, NMenu, NLayout, NIcon],
+  components: [
+    NButton,
+    NSpace,
+    NMenu,
+    NLayout,
+    NIcon,
+    NCard,
+    NGrid,
+    NGridItem,
+    NLayoutHeader,
+    NLayoutContent,
+    NRadio,
+    NEllipsis,
+    NAvatar,
+  ],
 });
+
 createApp(App).use(store).use(router).use(naive).mount("#app");

@@ -4,18 +4,54 @@
  * @Author: wwy
  * @Date: 2022-07-11 16:04:17
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-11 16:04:34
+ * @LastEditTime: 2022-07-12 16:41:57
 -->
 <template>
   <div>
-    <h2>BlobHomeView</h2>
+    <BlobTitleView></BlobTitleView>
+    <n-grid x-gap="0" :cols="24">
+      <n-gi :span="16" class="blob-activle-view">
+        <BlobActivleView></BlobActivleView>
+      </n-gi>
+      <n-gi :span="8" class="blob-calendar-view">
+        <BlobCalendarView :timeValue="calendarValue"></BlobCalendarView
+      ></n-gi>
+    </n-grid>
   </div>
 </template>
 
 <script>
+import BlobTitleView from "./Title/index.vue";
+import BlobActivleView from "./Acticle/index.vue";
+import BlobCalendarView from "./Calendar/index.vue";
+import { ref } from "vue";
+
 export default {
   name: "BlobHomeView",
+  components: {
+    BlobTitleView,
+    BlobActivleView,
+    BlobCalendarView,
+  },
+
+  setup() {
+    let calendarValue = ref(new Date());
+
+    return {
+      calendarValue,
+    };
+  },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+/* 高度小于1100, 隐藏日历 */
+@media screen and (max-width: 1100px) {
+  .blob-activle-view {
+    grid-column: span 24 / span 24 !important;
+  }
+  .blob-calendar-view {
+    display: none;
+  }
+}
+</style>
