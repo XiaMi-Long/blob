@@ -4,22 +4,25 @@
  * @Author: wwy
  * @Date: 2022-07-13 22:14:26
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-14 23:03:26
+ * @LastEditTime: 2022-07-14 23:33:59
 -->
 <template>
   <div class="article-body-box">
-    <div id="my-toc-box"></div>
-    <div v-html="demoArray" class="code-box"></div>
+    <div class="content">
+      <div id="my-toc-box"></div>
+      <div v-html="demoArray" class="code-box"></div>
+    </div>
   </div>
 </template>
 
 <script>
 import { marked } from "marked";
 import highlight from "highlight.js";
-import "highlight.js/scss/github.scss";
+import "highlight.js/scss/dark.scss";
 import { ref, onMounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
-
+import { cssVarUtils } from "@/utils/common/index";
+console.log(cssVarUtils);
 export default {
   name: "ArticleBodyView",
   setup() {
@@ -52,9 +55,10 @@ export default {
             </h${level}>`;
         },
         paragraph(text) {
+          // 如果第一个是目录就不渲染了
           if (text.trim().toLowerCase() === "[toc]") {
-            console.log(1);
             isDocLabel.value = true;
+            return "";
           }
           return `<p>
                     ${text}
@@ -69,19 +73,12 @@ export default {
     const parseTocFunction = () => {
       const fragment = new DocumentFragment();
       aHrefArray.value.forEach((ele) => {
-        console.log(ele);
-        // // 如果最大的标签小于当前标签证明是父子关系,h1标签为最大
-        // if (zIndex < ele.label) {
-
-        // }
-        // zIndex = ele.label;
-        // 每次遍历,记录层级,记录下一级比自己大还是小,以此确定层级
-        const li = document.createElement("li");
-        li.style.textIndent = tocOffsetConfig[`h${ele.label}`] + "em";
-        li.innerHTML = `<h${ele.label}>
-                          <a class="my-toc-box-a" style="color: var(--catalogue-text-color)" href="#${ele.text}">${ele.text}</a>
+        const div = document.createElement("div");
+        div.style.textIndent = tocOffsetConfig[`h${ele.label}`] + "em";
+        div.innerHTML = `<h${ele.label}>
+                          <a class="my-toc-box-a" href="#${ele.text}">${ele.text}</a>
                         </h${ele.label}>`;
-        fragment.appendChild(li);
+        fragment.appendChild(div);
       });
       document.getElementById("my-toc-box").appendChild(fragment);
     };
@@ -129,9 +126,16 @@ export default {
 
 <style lang="scss" scoped>
 .article-body-box {
-  padding: 40px 20%;
+  background-color: #979797;
 
-  text-align: left;
+  padding: 0px 10% 40px 10%;
+  .content {
+    padding: 30px 80px;
+
+    text-align: left;
+
+    background-color: white;
+  }
 }
 </style>
 
@@ -160,8 +164,33 @@ export default {
 }
 
 #my-toc-box {
+  max-height: 600px;
+
+  overflow: auto;
+
+  margin-bottom: 60px;
+
+  div::before {
+    content: "";
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background-color: var(--catalogue-text-color);
+
+    display: inline-block;
+
+    transition: color 0.5s, background-color 0.5s;
+  }
+
   .my-toc-box-a {
     text-decoration: none;
+
+    color: var(--catalogue-text-color);
+
+    transition: color 0.5s;
   }
 
   h1 {

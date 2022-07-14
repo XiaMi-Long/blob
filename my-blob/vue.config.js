@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-14 23:03:19
+ * @LastEditTime: 2022-07-14 23:05:24
  */
 const { defineConfig } = require("@vue/cli-service");
 const CopyPlugin = require("copy-webpack-plugin");
@@ -22,9 +22,6 @@ module.exports = defineConfig({
     loaderOptions: {
       sass: {
         additionalData: `@import "~@/style/index.scss";`,
-      },
-      css: {
-        additionalData: `@import "~@/style/index.css";`,
       },
     },
   },
