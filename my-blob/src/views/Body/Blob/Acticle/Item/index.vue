@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-12 10:58:19
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-12 17:26:31
+ * @LastEditTime: 2022-07-13 20:15:43
 -->
 <template>
   <div class="blob-activle-text-box">
@@ -19,7 +19,11 @@
         />
       </template>
       <!-- 文章标题 -->
-      <div class="title-box" title="文章标题">
+      <div
+        class="title-box"
+        title="文章标题"
+        @click="handleSeeMoreClick(item.activleId)"
+      >
         <n-ellipsis>
           <span class="title">{{ item.activleTitle }}</span>
         </n-ellipsis>
@@ -35,7 +39,7 @@
         </div>
       </div>
       <!-- 文章简介 -->
-      <div class="body-text">
+      <div class="body-text" @click="handleSeeMoreClick(item.activleId)">
         <n-ellipsis :line-clamp="3" :tooltip="false">
           {{ item.activleBody }}
         </n-ellipsis>
@@ -43,7 +47,12 @@
       <!-- 查看更多 -->
       <div class="select-more">
         <p>
-          <router-link to="#" title="查看更多">See More</router-link>
+          <router-link
+            to="#"
+            title="查看更多"
+            @click="handleSeeMoreClick(item.activleId)"
+            >See More</router-link
+          >
         </p>
       </div>
       <!-- 作者头像 -->
@@ -63,6 +72,7 @@ export default {
   setup() {
     const activleArray = [
       {
+        activleId: 1,
         activlePhoto: require("@/assets/images/1.jpg"),
         activleTitle: "Title Goes Hear",
         activleTime: "2022年7月12日13:54:00",
@@ -72,6 +82,7 @@ export default {
         activleUserPhoto: require("@/assets/images/p.jpg"),
       },
       {
+        activleId: 2,
         activlePhoto: require("@/assets/images/2.png"),
         activleTitle: "JavaScript is a programming language",
         activleTime: "2022年7月12日13:54:00",
@@ -80,6 +91,7 @@ export default {
         activleUserPhoto: require("@/assets/images/p.jpg"),
       },
       {
+        activleId: 3,
         activlePhoto: require("@/assets/images/3.jpg"),
         activleTitle: "日期选择器",
         activleTime: "2022年7月12日13:54:00",
@@ -88,6 +100,7 @@ export default {
         activleUserPhoto: require("@/assets/images/p.jpg"),
       },
       {
+        activleId: 4,
         activlePhoto: require("@/assets/images/4.jpg"),
         activleTitle:
           "国内目前处于 BI 1.0 阶段，也就是报表阶段，因此笔者将阐述这个阶段 BI 的核心开发概念",
@@ -99,6 +112,7 @@ export default {
         activleUserPhoto: require("@/assets/images/p.jpg"),
       },
       {
+        activleId: 5,
         activlePhoto: require("@/assets/images/5.jpg"),
         activleTitle:
           "javascript 的 this 是个头痛的话题，本期精读的文章更是引出了一个观点，避免使用 this。我们来看看是否有道理",
@@ -109,6 +123,7 @@ export default {
         activleUserPhoto: require("@/assets/images/p.jpg"),
       },
       {
+        activleId: 6,
         activlePhoto: require("@/assets/images/6.jpg"),
         activleTitle:
           "尤雨溪 在 2019 JSConf 的分享 Seeking the Balance in Framework Design 十分精彩，道出了如何进行合理的前端框架设计与框架选型",
@@ -120,6 +135,13 @@ export default {
       },
     ];
     return { activleArray };
+  },
+
+  methods: {
+    /* 处理查看更多 */
+    handleSeeMoreClick(id) {
+      this.$router.push(`/article/${id}`);
+    },
   },
 };
 </script>
@@ -142,6 +164,8 @@ export default {
     text-align: left;
 
     margin: 5px 0 20px 0;
+
+    cursor: pointer;
     .title {
       font-size: 1.5em;
       font-weight: bold;
@@ -174,6 +198,8 @@ export default {
     word-break: break-all;
 
     text-align: left;
+
+    cursor: pointer;
   }
 
   .select-more {
@@ -220,7 +246,15 @@ export default {
   box-shadow: $card-shadow;
 }
 
-@media screen and (min-width: 1500px) {
+@media screen and (min-width: 1700px) {
+  .blob-activle-text-box {
+    .active-photo {
+      height: 350px;
+    }
+  }
+}
+
+@media screen and (max-width: 1700px) {
   .blob-activle-text-box {
     .active-photo {
       height: 250px;

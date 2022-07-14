@@ -4,37 +4,64 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-11 23:28:51
+ * @LastEditTime: 2022-07-14 16:23:19
  */
 import { createRouter, createWebHistory } from "vue-router";
+import Index from "../views/index.vue";
 
 const routes = [
   {
-    path: "/",
+    path: "",
     name: "index",
-    component: import("../views/index.vue"),
+    component: Index,
     children: [
       {
         path: "home",
         name: "home",
         components: {
-          main: import("../views/Body/Blob/index.vue"),
-          BreadcrumbView: import("../views/Breadcrumb/index.vue"),
+          main: () =>
+            import(
+              /* webpackChunkName: "blobIndex" */ "@/views/Body/Blob/index.vue"
+            ),
+          BreadcrumbView: () =>
+            import(
+              /* webpackChunkName: "Breadcrumb" */ "@/views/Breadcrumb/index.vue"
+            ),
         },
       },
       {
         path: "user",
         name: "user",
         components: {
-          main: import("../views/User/index.vue"),
-          BreadcrumbView: import("../views/Breadcrumb/index.vue"),
+          main: () =>
+            import(
+              /* webpackChunkName: "userIndex" */ "@/views/User/index.vue"
+            ),
+          BreadcrumbView: () =>
+            import(
+              /* webpackChunkName: "Breadcrumb" */ "@/views/Breadcrumb/index.vue"
+            ),
+        },
+      },
+      {
+        path: "article/:id",
+        name: "article",
+        components: {
+          main: () =>
+            import(
+              /* webpackChunkName: "ArticleIndex" */ "@/views/Body/Article/index.vue"
+            ),
+          BreadcrumbView: () =>
+            import(
+              /* webpackChunkName: "Breadcrumb" */ "@/views/Breadcrumb/index.vue"
+            ),
         },
       },
     ],
   },
 ];
-
 const router = createRouter({
+  mode: "history",
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });

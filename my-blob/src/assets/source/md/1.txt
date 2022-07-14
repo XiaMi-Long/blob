@@ -1,0 +1,171 @@
+## ES6
+
+ES6的模块化的基本规则或特点
+
+1.  每一个模块只加载一次， 每一个JS只执行一次， 如果下次再去加载同目录下同文件，直接从内存中读取。 一个模块就是一个单例，或者说就是一个对象；
+
+2. 每一个模块内声明的变量都是局部变量， 不会污染全局作用域；
+
+3. 模块内部的变量或者函数可以通过export导出；
+
+4. 一个模块可以导入别的模块
+
+> 在普通的非webpack项目里使用需要
+>
+> ```js
+>   <script type="module">
+>     import './moduleA.js'
+>   </script>
+> ```
+>
+> 更变为**module**项目
+
+### export 使用语法
+
+#### 语法一
+
+想导出的变量名或者方法名前加个**`export`**
+
+```js
+export const param = "wwy"
+
+export const obj = {
+  name: "wwy",
+  age: 22
+}
+
+export function get(){
+  console.log("get()方法执行！");
+}
+```
+
+```js
+import { param, obj, get } from './moduleB.js'
+console.log(param)
+console.log(obj)
+get()
+```
+
+![image-20220113194033499](E:\typora 图片文件Copy\image-20220113194033499.png)
+
+#### 语法二
+
+统一导出
+
+```js
+const param = 'wwy'
+
+const obj = {
+  name: 'wwy',
+  age: 22,
+}
+
+function get() {
+  console.log('get()方法执行！')
+}
+
+export { param, obj, get }
+```
+
+#### 语法三
+
+导出的时候可以使用**`as`**进行加别名，这样引入的时候就直接引入别名
+
+```js
+const param = 'wwy'
+
+const obj = {
+    name: 'wwy',
+    age: 22,
+}
+
+function get() {
+    console.log('get()方法执行！')
+}
+
+export { param as a, obj as b, get as c}
+-----
+import { a, b, c } from './moduleB.js'
+console.log(a)
+console.log(b)
+c()
+```
+
+#### 语法四
+
+匿名导入，类似一个文件只暴露一个导出的接口，那么就可以使用匿名接口
+
+```js
+const param = 'wwy'
+
+export default {
+  name: 'wwy',
+  age: 22,
+}
+
+function get() {
+  console.log('get()方法执行！')
+}
+-----
+export default function get() {
+  console.log('函数也可以！')
+}
+
+-----
+import  moduleBdefaultObj from './moduleB.js'
+console.log(moduleBdefaultObj)
+```
+
+#### 语法五
+
+```js
+function get() {
+console.log('get()方法执行！')
+}
+
+export {get as default}
+-----
+import  moduleBdefaultObj from './moduleB.js'
+console.log(moduleBdefaultObj)
+
+```
+
+#### 语法六
+
+如果想把我们本js里面导入的js模块进行导出，可以使用下面的方法
+
+```js
+// moduleA
+import {create} from './moduleB.js'
+console.log(create)
+//moduleB
+
+export * from './moduleC.js'
+//moduleC
+//如果想导出个别，直接{导出即可}
+export function create(){
+  console.log("我是MODULEC的create()方法");
+}
+```
+
+### import 使用
+
+#### 语法一
+
+在import的时候可以使用通配符+别名
+
+```js
+export function create(){
+  console.log("create()");
+}
+
+export let count =  10
+
+export let obj = {
+  xds : "喜德盛"
+}
+-----
+import * as all from './moduleB.js'
+console.log(all)
+```
+

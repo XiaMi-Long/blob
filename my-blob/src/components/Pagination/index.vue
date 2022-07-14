@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-12 17:44:57
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-12 18:04:39
+ * @LastEditTime: 2022-07-12 18:06:08
 -->
 <template>
   <div class="pagination-view" :style="{ margin: margin }">
@@ -58,9 +58,5 @@ export default {
   background: #f4f4f4;
   color: #90a4ae;
   border: #f4f4f4;
-}
-
-::v-deep(.n-pagination
-    .n-pagination-item.n-pagination-item--disabled.n-pagination-item--button) {
 }
 </style>
