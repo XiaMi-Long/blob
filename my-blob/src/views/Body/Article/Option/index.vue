@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-16 20:56:47
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-16 22:48:13
+ * @LastEditTime: 2022-07-16 23:25:43
 -->
 <template>
   <div class="article-option-box">
@@ -37,42 +37,42 @@
       <n-tooltip trigger="hover">
         <template #trigger>
           <n-icon
-            v-show="!nowHide"
+            v-show="nowHide"
             size="35"
-            @click="handleDarkIconClick"
+            @click="handleShowHeaderIconClick"
             class="option-sunny-icon option-icon"
           >
             <EyeOffOutline></EyeOffOutline> </n-icon
         ></template>
-        隐藏头部
+        显示头部
       </n-tooltip>
       <n-tooltip trigger="hover">
         <template #trigger>
           <n-icon
-            v-show="nowHide"
+            v-show="!nowHide"
             size="35"
-            @click="handleDarkIconClick"
+            @click="handleHideHeaderIconClick"
             class="option-sunny-icon option-icon"
           >
             <EyeOutline></EyeOutline>
           </n-icon>
         </template>
-        显示头部
+        隐藏头部
       </n-tooltip>
     </div>
   </div>
 </template>
 
 <script>
+import { ref, computed, onUnmounted } from "vue";
+import { useStore } from "vuex";
+import { cssVarUtils, hideHeader, showHeader } from "@/utils/common/index";
 import {
   MoonSharp,
   SunnyOutline,
   EyeOutline,
   EyeOffOutline,
 } from "@vicons/ionicons5";
-import { ref, computed } from "vue";
-import { useStore } from "vuex";
-import { cssVarUtils } from "@/utils/common/index";
 
 export default {
   name: "ArticleOptionView",
@@ -97,7 +97,15 @@ export default {
 
     const nowDark = computed(() => store.state.isDark === true);
     const nowHide = computed(() => isShowHeader.value === true);
+
+    // 本页面卸载前要恢复headere
+    onUnmounted(() => {
+      console.log(1);
+      showHeader();
+    });
+
     return {
+      isShowHeader,
       nowDark,
       nowHide,
       store,
@@ -132,6 +140,18 @@ export default {
       setCssVar.setVar("--article-text-color", this.skinConfig.lightTextColor);
       // 更改是否暗黑样式的store
       this.store.commit("setIsDark", false);
+    },
+
+    // 点击隐藏顶部图标
+    handleHideHeaderIconClick() {
+      hideHeader();
+      this.isShowHeader = true;
+    },
+
+    // 点击显示顶部图片
+    handleShowHeaderIconClick() {
+      showHeader();
+      this.isShowHeader = false;
     },
   },
 };

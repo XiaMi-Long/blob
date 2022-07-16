@@ -47,6 +47,8 @@ export default {
   overflow: auto;
 
   box-shadow: $card-shadow;
+
+  color: black;
 }
 
 ::v-deep(.n-card > .n-card__content:first-child) {

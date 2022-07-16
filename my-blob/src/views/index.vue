@@ -4,20 +4,30 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-16 22:33:38
+ * @LastEditTime: 2022-07-17 00:02:15
 -->
 <template>
   <n-config-provider :theme="isDark">
     <div class="home">
       <n-layout>
-        <n-layout-header>
+        <n-layout-header id="home-header" data-id="home">
           <router-view
             class="view left-sidebar"
             name="BreadcrumbView"
           ></router-view>
         </n-layout-header>
         <n-layout-content>
-          <router-view class="view main-content" name="main"></router-view>
+          <router-view
+            class="view main-content"
+            name="main"
+            v-slot="{ Component }"
+          >
+            <transition name="fade">
+              <keep-alive>
+                <component :is="Component" />
+              </keep-alive>
+            </transition>
+          </router-view>
         </n-layout-content>
       </n-layout>
     </div>
@@ -51,4 +61,6 @@ export default {
 .n-layout-header {
   height: 65px;
 }
+
+//
 </style>
