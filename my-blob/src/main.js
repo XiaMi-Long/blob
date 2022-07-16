@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-14 23:05:51
+ * @LastEditTime: 2022-07-16 22:24:47
  */
 import { createApp } from "vue";
 import App from "./App.vue";
@@ -32,6 +32,8 @@ import {
   NEllipsis,
   NAvatar,
   NPagination,
+  NTooltip,
+  NConfigProvider,
 } from "naive-ui";
 
 const naive = create({
@@ -50,6 +52,8 @@ const naive = create({
     NEllipsis,
     NAvatar,
     NPagination,
+    NTooltip,
+    NConfigProvider,
   ],
 });
 

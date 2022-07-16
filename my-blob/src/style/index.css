@@ -1,6 +1,14 @@
-/*  md文档展示页面,目录的文字颜色 */
 :root {
+  /* header里面搜索框的背景颜色 */
+  --header-search-input-background-color: white;
+  /* header搜索框里面的文字颜色 */
+  --header-search-input-text-color: black;
+  /* md文档目录的颜色 */
   --catalogue-text-color: #9b9696;
+  /*  md文档展示页面背景色 */
+  --article-background-color: white;
+  /* md文档文字颜色 */
+  --article-text-color: black;
 }
 
 ;

@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 17:28:26
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-11 22:39:31
+ * @LastEditTime: 2022-07-16 22:59:44
 -->
 <template>
   <div class="input-box">
@@ -77,9 +77,7 @@ export default {
   padding-left: 20px;
 
   .input {
-    background-color: white;
-
-    padding: 0 10px;
+    background-color: var(--header-search-input-background-color);
 
     border: 0;
     border-bottom: 2px dashed black;
@@ -88,7 +86,7 @@ export default {
 
     outline: none;
 
-    color: black;
+    color: var(--header-search-input-text-color);
 
     transition: width 1s;
     &:focus-visible {

@@ -4,7 +4,15 @@
  * @Author: wwy
  * @Date: 2022-07-13 22:14:26
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-14 23:33:59
+ * @LastEditTime: 2022-07-16 22:43:12
+-->
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: wwy
+ * @Date: 2022-07-13 22:14:26
+ * @LastEditors: wwy
+ * @LastEditTime: 2022-07-16 20:56:40
 -->
 <template>
   <div class="article-body-box">
@@ -21,8 +29,7 @@ import highlight from "highlight.js";
 import "highlight.js/scss/dark.scss";
 import { ref, onMounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
-import { cssVarUtils } from "@/utils/common/index";
-console.log(cssVarUtils);
+
 export default {
   name: "ArticleBodyView",
   setup() {
@@ -48,11 +55,11 @@ export default {
           const escapedText = text.toLowerCase();
           aHrefArray.value.push({ text: escapedText, label: level });
           return `<h${level}>
-              <a name="${escapedText}" class="anchor" href="#${escapedText}">
-                <span class="header-link"></span>
-              </a>
-              ${text}
-            </h${level}>`;
+                <a name="${escapedText}" class="anchor" href="#${escapedText}">
+                  <span class="header-link"></span>
+                </a>
+                ${text}
+              </h${level}>`;
         },
         paragraph(text) {
           // 如果第一个是目录就不渲染了
@@ -61,8 +68,8 @@ export default {
             return "";
           }
           return `<p>
-                    ${text}
-                  </p>`;
+                      ${text}
+                    </p>`;
         },
       };
       marked.use({ renderer });
@@ -76,8 +83,8 @@ export default {
         const div = document.createElement("div");
         div.style.textIndent = tocOffsetConfig[`h${ele.label}`] + "em";
         div.innerHTML = `<h${ele.label}>
-                          <a class="my-toc-box-a" href="#${ele.text}">${ele.text}</a>
-                        </h${ele.label}>`;
+                            <a class="my-toc-box-a" href="#${ele.text}">${ele.text}</a>
+                          </h${ele.label}>`;
         fragment.appendChild(div);
       });
       document.getElementById("my-toc-box").appendChild(fragment);
@@ -126,7 +133,7 @@ export default {
 
 <style lang="scss" scoped>
 .article-body-box {
-  background-color: #979797;
+  background-color: var(--article-background-color);
 
   padding: 0px 10% 40px 10%;
   .content {
@@ -134,7 +141,11 @@ export default {
 
     text-align: left;
 
-    background-color: white;
+    background-color: var(--article-background-color);
+
+    color: var(--article-text-color);
+
+    transition: background-color 1s, color 1s;
   }
 }
 </style>
