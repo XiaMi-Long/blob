@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-16 20:56:47
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-16 23:25:43
+ * @LastEditTime: 2022-07-18 22:38:41
 -->
 <template>
   <div class="article-option-box">
@@ -125,7 +125,7 @@ export default {
       // 设置md页面文字颜色
       setCssVar.setVar("--article-text-color", this.skinConfig.darkTextColor);
       // 更改是否暗黑样式的store
-      this.store.commit("setIsDark", true);
+      this.store.commit("SET_THEME", true);
     },
 
     // 点击白天模式图标
@@ -139,7 +139,7 @@ export default {
       // 设置md页面文字颜色
       setCssVar.setVar("--article-text-color", this.skinConfig.lightTextColor);
       // 更改是否暗黑样式的store
-      this.store.commit("setIsDark", false);
+      this.store.commit("SET_THEME", false);
     },
 
     // 点击隐藏顶部图标

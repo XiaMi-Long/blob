@@ -4,7 +4,15 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-17 00:02:15
+ * @LastEditTime: 2022-07-18 22:37:27
+-->
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: wwy
+ * @Date: 2022-07-11 10:44:27
+ * @LastEditors: wwy
+ * @LastEditTime: 2022-07-18 22:00:37
 -->
 <template>
   <n-config-provider :theme="isDark">
@@ -17,17 +25,9 @@
           ></router-view>
         </n-layout-header>
         <n-layout-content>
-          <router-view
-            class="view main-content"
-            name="main"
-            v-slot="{ Component }"
-          >
-            <transition name="fade">
-              <keep-alive>
-                <component :is="Component" />
-              </keep-alive>
-            </transition>
-          </router-view>
+          <keep-alive :include="notKeepAlivePageArray">
+            <router-view class="view main-content" name="main"> </router-view>
+          </keep-alive>
         </n-layout-content>
       </n-layout>
     </div>
@@ -38,6 +38,7 @@
 import { darkTheme } from "naive-ui";
 import { computed } from "vue";
 import { useStore } from "vuex";
+import { notKeepAlivePageArray } from "@/router/index.js";
 
 export default {
   name: "HomeView",
@@ -52,6 +53,7 @@ export default {
 
     return {
       isDark,
+      notKeepAlivePageArray,
     };
   },
 };

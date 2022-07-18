@@ -4,11 +4,17 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-14 16:23:19
+ * @LastEditTime: 2022-07-18 22:37:01
  */
 import { createRouter, createWebHistory } from "vue-router";
 import Index from "../views/index.vue";
 
+/**
+ * keepAlive:页面是否缓存
+ *
+ *
+ *
+ */
 const routes = [
   {
     path: "",
@@ -28,6 +34,7 @@ const routes = [
               /* webpackChunkName: "Breadcrumb" */ "@/views/Breadcrumb/index.vue"
             ),
         },
+        meta: { keepAlive: true },
       },
       {
         path: "user",
@@ -42,6 +49,7 @@ const routes = [
               /* webpackChunkName: "Breadcrumb" */ "@/views/Breadcrumb/index.vue"
             ),
         },
+        meta: { keepAlive: true },
       },
       {
         path: "article/:id",
@@ -56,14 +64,32 @@ const routes = [
               /* webpackChunkName: "Breadcrumb" */ "@/views/Breadcrumb/index.vue"
             ),
         },
+        meta: { keepAlive: false },
       },
     ],
   },
 ];
+
+/* 不允许缓存的页面 */
+const notKeepAlivePageArray = [];
+const getKeepAliveValue = function (obj) {
+  if (obj?.meta?.keepAlive === false) {
+    notKeepAlivePageArray.push({ name: obj.name });
+  }
+  if (obj?.children) {
+    obj.children.forEach((item) => {
+      getKeepAliveValue(item);
+    });
+  }
+};
+routes.forEach((item) => {
+  getKeepAliveValue(item);
+});
+
 const router = createRouter({
   mode: "history",
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
 
-export default router;
+export { router, notKeepAlivePageArray };
