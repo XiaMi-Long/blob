@@ -4,10 +4,12 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-12 16:45:14
+ * @LastEditTime: 2022-07-20 20:28:44
 -->
 <template>
-  <router-view></router-view>
+  <n-message-provider>
+    <router-view></router-view>
+  </n-message-provider>
 </template>
 
 <style lang="scss">

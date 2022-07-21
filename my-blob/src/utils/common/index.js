@@ -1,10 +1,10 @@
 /*
- * @Descripttion:
+ * @Descripttion:提供工共的函数
  * @version:
  * @Author: wwy
  * @Date: 2022-07-14 23:07:11
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-16 23:12:35
+ * @LastEditTime: 2022-07-18 23:03:25
  */
 
 /**

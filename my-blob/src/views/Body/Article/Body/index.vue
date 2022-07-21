@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-13 22:14:26
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-16 22:43:12
+ * @LastEditTime: 2022-07-20 20:45:21
 -->
 <!--
  * @Descripttion: 
@@ -24,15 +24,21 @@
 </template>
 
 <script>
+import "highlight.js/scss/dark.scss";
+
 import { marked } from "marked";
 import highlight from "highlight.js";
-import "highlight.js/scss/dark.scss";
+import { useMessage } from "naive-ui";
 import { ref, onMounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
+import { asyncClipboardUtils } from "async-clipboard-utils";
 
 export default {
   name: "ArticleBodyView",
+
   setup() {
+    const message = useMessage();
+    // md数据
     let demoArray = ref("");
     // 获取文章里面的目录a链接的id.为如果要显示目录进行存储
     const aHrefArray = ref([]);
@@ -51,6 +57,7 @@ export default {
     // 扩展marker,使其支持目录等非自带的功能
     const useMarked = () => {
       const renderer = {
+        // 截取h标签元素的处理
         heading(text, level) {
           const escapedText = text.toLowerCase();
           aHrefArray.value.push({ text: escapedText, label: level });
@@ -61,6 +68,7 @@ export default {
                 ${text}
               </h${level}>`;
         },
+        // 截取文本字段的处理
         paragraph(text) {
           // 如果第一个是目录就不渲染了
           if (text.trim().toLowerCase() === "[toc]") {
@@ -90,6 +98,71 @@ export default {
       document.getElementById("my-toc-box").appendChild(fragment);
     };
 
+    // 生成代码区域生成copy等按钮
+    const createPreDocument = () => {
+      const createFragment = (item) => {
+        const fragment = new DocumentFragment();
+        const copy = document.createElement("div");
+        copy.setAttribute("class", "copy-button pre-button");
+        copy.innerText = "Copy";
+        // 复制代码区域的文字到剪贴板
+        copy.addEventListener("click", function () {
+          const code = item.querySelectorAll("code");
+          if (code.length !== 1) {
+            throw new Error("复制事件解析错误");
+          }
+          asyncClipboardUtils({
+            type: "write-text",
+            text: code[0].innerText,
+            clipboardItem: null,
+            writeSuccess: function () {
+              message.success("Copy Success！");
+            },
+            writeError: function () {
+              console.err(
+                "复制失败,请检查域名是否为HTPPS/是否已经授权网页允许复制"
+              );
+              message.error("Copy Error！");
+            },
+            error: function () {
+              console.err(
+                "复制失败,请检查域名是否为HTPPS/是否已经授权网页允许复制"
+              );
+              message.error("Copy Error！");
+            },
+          });
+        });
+
+        const full = document.createElement("div");
+        full.setAttribute("class", "full-button pre-button");
+        full.innerText = "FullScreen";
+        // 改变css使其全屏
+        full.addEventListener("click", function () {
+          const code = item.getElementsByTagName("code");
+          const buttonGroup = item.getElementsByClassName("pre-button-group");
+          if (code.length === 1 && buttonGroup.length === 1) {
+            code[0].classList.toggle("full-screen-code");
+            buttonGroup[0].classList.toggle("full-screen-button-group");
+          } else {
+            throw new Error("全屏事件解析错误");
+          }
+        });
+
+        const div = document.createElement("div");
+        div.setAttribute("class", "pre-button-group");
+        div.appendChild(copy);
+        div.appendChild(full);
+
+        fragment.appendChild(div);
+        return fragment;
+      };
+
+      const pre = document.querySelectorAll(".code-box pre");
+      pre.forEach((item) => {
+        item.appendChild(createFragment(item));
+      });
+    };
+
     // 初始化文章,并渲染代码高亮
     const initFunction = () => {
       const router = useRouter();
@@ -116,6 +189,9 @@ export default {
                 el.setAttribute("border-spacing", "1");
                 el.setAttribute("class", "table-item");
               });
+
+              console.warn("init Pre");
+              createPreDocument();
             });
           })
         )
@@ -222,5 +298,58 @@ export default {
   h6 {
     display: inline-block;
   }
+}
+.code-box pre {
+  position: relative;
+
+  &:hover .pre-button-group {
+    opacity: 1;
+  }
+}
+
+.pre-button-group {
+  display: inline-block;
+
+  position: absolute;
+
+  top: 10px;
+  right: 10px;
+
+  color: white;
+
+  opacity: 0;
+
+  transition: opacity 1s;
+
+  .pre-button {
+    display: inline-block;
+
+    min-width: 60px;
+
+    text-align: center;
+
+    cursor: pointer;
+
+    &:hover {
+      font-weight: bold;
+    }
+  }
+}
+
+.full-screen-code {
+  position: fixed;
+
+  width: 100vw;
+  height: 100vh;
+
+  left: 0;
+  top: 0;
+
+  z-index: 10;
+}
+.full-screen-button-group {
+  position: fixed;
+
+  z-index: 10;
 }
 </style>

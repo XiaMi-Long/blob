@@ -1,11 +1,3 @@
-<!--
- * @Descripttion: 
- * @version: 
- * @Author: wwy
- * @Date: 2022-07-11 15:56:14
- * @LastEditors: wwy
- * @LastEditTime: 2022-07-11 22:42:50
--->
 <template>
   <div class="breadcrumb-container">
     <div class="logo-search">
@@ -14,6 +6,7 @@
     </div>
     <div class="page-title">
       <Title></Title>
+      <Icon></Icon>
     </div>
   </div>
 </template>
@@ -23,6 +16,7 @@
 import Logo from "./Logo/index.vue";
 import Input from "./Input/index.vue";
 import Title from "./Title/index.vue";
+import Icon from "./Icon/index.vue";
 
 export default {
   name: "BreadcrumbView",
@@ -30,6 +24,7 @@ export default {
     Logo,
     Input,
     Title,
+    Icon,
   },
 
   setup() {

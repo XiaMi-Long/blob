@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-18 22:37:27
+ * @LastEditTime: 2022-07-19 21:47:11
 -->
 <!--
  * @Descripttion: 
@@ -25,9 +25,15 @@
           ></router-view>
         </n-layout-header>
         <n-layout-content>
-          <keep-alive :include="notKeepAlivePageArray">
-            <router-view class="view main-content" name="main"> </router-view>
-          </keep-alive>
+          <router-view
+            class="view main-content"
+            name="main"
+            v-slot="{ Component }"
+          >
+            <keep-alive :include="notKeepAlivePageArray">
+              <component :is="Component" />
+            </keep-alive>
+          </router-view>
         </n-layout-content>
       </n-layout>
     </div>
