@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-19 21:47:11
+ * @LastEditTime: 2022-07-21 23:09:08
 -->
 <!--
  * @Descripttion: 
@@ -69,6 +69,13 @@ export default {
 .n-layout-header {
   height: 65px;
 }
+</style>
 
-//
+<style lang="scss">
+// 顶部菜单固定
+.home-header-fixed {
+  position: fixed;
+
+  z-index: 2;
+}
 </style>

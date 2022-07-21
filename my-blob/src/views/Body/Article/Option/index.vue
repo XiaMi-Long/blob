@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-16 20:56:47
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-20 21:02:12
+ * @LastEditTime: 2022-07-21 22:57:56
 -->
 <template>
   <div class="article-option-box">
@@ -13,8 +13,8 @@
         <template #trigger>
           <n-icon
             size="35"
-            @click="handleDarkIconClick"
-            class="option-dark-icon option-icon"
+            @click="handleEnlargeIconClick"
+            class="option-enlarge-icon option-icon"
           >
             <PlusRound></PlusRound>
           </n-icon>
@@ -25,8 +25,8 @@
         <template #trigger>
           <n-icon
             size="35"
-            @click="handleDarkIconClick"
-            class="option-dark-icon option-icon"
+            @click="handleLessonIconClick"
+            class="option-less-icon option-icon"
           >
             <Subtract24Filled></Subtract24Filled>
           </n-icon>
@@ -118,6 +118,8 @@ export default {
 
     // 是否头部header已经隐藏,默认没有隐藏
     let isShowHeader = ref(false);
+    // 现在页面内容放大到什么程度了
+    let zoomLevel = ref(1);
 
     const nowDark = computed(() => store.state.isDark === true);
     const nowHide = computed(() => isShowHeader.value === true);
@@ -129,6 +131,7 @@ export default {
 
     return {
       isShowHeader,
+      zoomLevel,
       nowDark,
       nowHide,
       store,
@@ -157,6 +160,36 @@ export default {
       showHeader();
       this.isShowHeader = false;
     },
+
+    // 点击放大图标
+    handleEnlargeIconClick() {
+      const content = document.getElementsByClassName("article-zoom-content");
+      if (content.length === 0) {
+        throw new Error("放大获取dom异常");
+      }
+      // 最高放大四级
+      if (this.zoomLevel === 4) {
+        this.zoomLevel = 0;
+      }
+
+      this.zoomLevel++;
+      content[0].style.zoom = this.zoomLevel;
+    },
+
+    // 点击缩小图标
+    handleLessonIconClick() {
+      const content = document.getElementsByClassName("article-zoom-content");
+      if (content.length === 0) {
+        throw new Error("放大获取dom异常");
+      }
+
+      if (this.zoomLevel === 1) {
+        return;
+      }
+
+      this.zoomLevel--;
+      content[0].style.zoom = this.zoomLevel;
+    },
   },
 };
 </script>
@@ -176,6 +209,18 @@ export default {
       cursor: pointer;
 
       margin: 10px 0;
+    }
+
+    .option-enlarge-icon {
+      &:active {
+        transform: scale(1.4);
+      }
+    }
+
+    .option-less-icon {
+      &:active {
+        transform: scale(0.7);
+      }
     }
   }
 }

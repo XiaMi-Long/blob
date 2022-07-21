@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-18 22:49:42
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-19 21:32:49
+ * @LastEditTime: 2022-07-21 23:08:12
 -->
 <template>
   <div class="breadcrumb-icon">
@@ -44,12 +44,23 @@
       ></template>
       全屏
     </n-tooltip>
+    <n-tooltip trigger="hover">
+      <template #trigger>
+        <n-icon
+          size="30"
+          class="option-full-icon option-icon"
+          @click="handleFixedIconClick"
+        >
+          <WebAssetSharp></WebAssetSharp> </n-icon
+      ></template>
+      固定头部菜单
+    </n-tooltip>
   </div>
 </template>
 
 <script>
 import { MoonSharp, SunnyOutline } from "@vicons/ionicons5";
-import { FullscreenRound } from "@vicons/material";
+import { FullscreenRound, WebAssetSharp } from "@vicons/material";
 import { useStore } from "vuex";
 import { computed } from "vue";
 import { goDarkTheme, goLight } from "@/utils/common/api.js";
@@ -60,6 +71,7 @@ export default {
     MoonSharp,
     SunnyOutline,
     FullscreenRound,
+    WebAssetSharp,
   },
 
   setup() {
@@ -88,6 +100,14 @@ export default {
       }
 
       document.documentElement.requestFullscreen();
+    },
+
+    // 点击固定顶部菜单图标
+    handleFixedIconClick() {
+      const homeHeader = document.getElementById("home-header");
+      if (homeHeader !== null) {
+        homeHeader.classList.toggle("home-header-fixed");
+      }
     },
   },
 };

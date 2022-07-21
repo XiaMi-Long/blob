@@ -1,22 +1,22 @@
 <!--
- * @Descripttion: 
- * @version: 
- * @Author: wwy
- * @Date: 2022-07-13 22:14:26
+    * @Descripttion: 
+    * @version: 
+    * @Author: wwy
+    * @Date: 2022-07-13 22:14:26
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-20 20:45:21
--->
+ * @LastEditTime: 2022-07-21 22:46:26
+    -->
 <!--
- * @Descripttion: 
- * @version: 
- * @Author: wwy
- * @Date: 2022-07-13 22:14:26
- * @LastEditors: wwy
- * @LastEditTime: 2022-07-16 20:56:40
--->
+    * @Descripttion: 
+    * @version: 
+    * @Author: wwy
+    * @Date: 2022-07-13 22:14:26
+    * @LastEditors: wwy
+    * @LastEditTime: 2022-07-16 20:56:40
+    -->
 <template>
   <div class="article-body-box">
-    <div class="content">
+    <div class="article-zoom-content content">
       <div id="my-toc-box"></div>
       <div v-html="demoArray" class="code-box"></div>
     </div>
@@ -62,11 +62,11 @@ export default {
           const escapedText = text.toLowerCase();
           aHrefArray.value.push({ text: escapedText, label: level });
           return `<h${level}>
-                <a name="${escapedText}" class="anchor" href="#${escapedText}">
-                  <span class="header-link"></span>
-                </a>
-                ${text}
-              </h${level}>`;
+                    <a name="${escapedText}" class="anchor" href="#${escapedText}">
+                      <span class="header-link"></span>
+                    </a>
+                    ${text}
+                  </h${level}>`;
         },
         // 截取文本字段的处理
         paragraph(text) {
@@ -76,8 +76,8 @@ export default {
             return "";
           }
           return `<p>
-                      ${text}
-                    </p>`;
+                          ${text}
+                        </p>`;
         },
       };
       marked.use({ renderer });
@@ -91,8 +91,8 @@ export default {
         const div = document.createElement("div");
         div.style.textIndent = tocOffsetConfig[`h${ele.label}`] + "em";
         div.innerHTML = `<h${ele.label}>
-                            <a class="my-toc-box-a" href="#${ele.text}">${ele.text}</a>
-                          </h${ele.label}>`;
+                                <a class="my-toc-box-a" href="#${ele.text}">${ele.text}</a>
+                              </h${ele.label}>`;
         fragment.appendChild(div);
       });
       document.getElementById("my-toc-box").appendChild(fragment);
