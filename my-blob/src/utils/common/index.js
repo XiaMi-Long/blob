@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-14 23:07:11
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-18 23:03:25
+ * @LastEditTime: 2022-07-25 21:22:14
  */
 
 /**
@@ -45,4 +45,14 @@ export function hideHeader() {
 export function showHeader() {
   const dom = document.querySelector('#home-header[data-id="home"]');
   dom.style.display = "block";
+}
+
+/**
+ * @name: wwy
+ * @msg: 深拷贝
+ * @param {*} obj 要被拷贝的对象
+ * @return {*}
+ */
+export function deepCopy(obj) {
+  return JSON.parse(JSON.stringify(obj));
 }

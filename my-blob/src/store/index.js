@@ -4,10 +4,10 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-18 22:19:42
+ * @LastEditTime: 2022-07-25 22:49:10
  */
 import { createStore } from "vuex";
-import { cssVarUtils } from "@/utils/common/index";
+import { cssVarUtils, deepCopy } from "@/utils/common/index";
 import getters from "./getters.js";
 
 const setCssVar = new cssVarUtils();
@@ -16,6 +16,15 @@ export default createStore({
   state: {
     /* 主题 */
     isDark: false,
+    /* Home页面数据对象 */
+    homePageObject: {
+      /* 数据 */
+      activleArray: deepCopy(window._activleArray),
+      /* 页码 */
+      pageNo: 1,
+      /* 每页条数 */
+      pageTotal: 6,
+    },
   },
   getters,
   mutations: {
@@ -30,6 +39,11 @@ export default createStore({
         setCssVar.setVar("--header-search-input-background-color", "white");
         setCssVar.setVar("--header-search-input-text-color", "black");
       }
+    },
+
+    /* 设置页码 */
+    SET_ACTIVLE_PAGE_NO(state, value) {
+      state.homePageObject.pageNo = value;
     },
   },
   actions: {},

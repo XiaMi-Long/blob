@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-14 23:05:24
+ * @LastEditTime: 2022-07-25 22:04:07
  */
 const { defineConfig } = require("@vue/cli-service");
 const CopyPlugin = require("copy-webpack-plugin");
@@ -38,7 +38,15 @@ module.exports = defineConfig({
     //   .end();
     config.plugin("copy").use(CopyPlugin, [
       {
-        patterns: [{ from: "src/assets/source/md", to: "doc" }],
+        patterns: [
+          { from: "src/assets/source/md", to: "doc" },
+          {
+            from: "src/assets/images/activle-images",
+            to: "img/activle-images",
+          },
+          { from: "src/assets/images/user-images", to: "img/user-images" },
+          { from: "src/assets/images/system-images", to: "img/system-images" },
+        ],
       },
     ]);
     // 将文件作为字符串导入, 使用webpack自带的"资源模块"

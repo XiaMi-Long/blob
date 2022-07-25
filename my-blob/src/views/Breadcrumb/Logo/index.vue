@@ -4,12 +4,12 @@
  * @Author: wwy
  * @Date: 2022-07-11 17:08:56
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-16 22:52:11
+ * @LastEditTime: 2022-07-25 22:04:55
 -->
 <template>
   <div class="logo">
     <router-link to="/home">
-      <img src="@/assets/images/logo.jpg" alt="" class="logo-img" />
+      <img src="img/system-images/logo.jpg" alt="" class="logo-img" />
     </router-link>
   </div>
 </template>

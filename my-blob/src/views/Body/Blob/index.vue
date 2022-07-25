@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 16:04:17
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-12 17:52:17
+ * @LastEditTime: 2022-07-25 22:50:20
 -->
 <template>
   <div>
@@ -21,7 +21,12 @@
     </n-grid>
     <n-grid x-gap="0" :cols="24">
       <n-gi :span="24" class="blob-pagination-view">
-        <PaginationView margin="100px 0 70px 0 "></PaginationView>
+        <PaginationView
+          margin="100px 0 70px 0 "
+          :pageNo="pageNo"
+          :pageTotal="pageTotal"
+          @update-page="handlePaginationUpdatePage"
+        ></PaginationView>
       </n-gi>
     </n-grid>
   </div>
@@ -35,7 +40,8 @@ import BlobArchivesView from "./Archives/index.vue";
 import BlobTagsView from "./Tags/index.vue";
 import PaginationView from "@/components/Pagination/index.vue";
 
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { useStore } from "vuex";
 
 export default {
   name: "BlobHomeView",
@@ -49,11 +55,23 @@ export default {
   },
 
   setup() {
+    const store = useStore();
+
     let calendarValue = ref(new Date());
 
     return {
+      store,
       calendarValue,
+      pageNo: computed(() => store.getters.getHomePageNo),
+      pageTotal: computed(() => store.getters.getHomePageTotal),
     };
+  },
+
+  methods: {
+    // 处理分页页码更新
+    handlePaginationUpdatePage(page) {
+      this.store.commit("SET_ACTIVLE_PAGE_NO", page);
+    },
   },
 };
 </script>

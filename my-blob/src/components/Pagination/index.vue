@@ -4,16 +4,22 @@
  * @Author: wwy
  * @Date: 2022-07-12 17:44:57
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-12 18:06:08
+ * @LastEditTime: 2022-07-25 22:47:14
 -->
+
 <template>
   <div class="pagination-view" :style="{ margin: margin }">
-    <n-pagination v-model:page="page" :page-count="10" size="large" />
+    <n-pagination
+      v-model:page="page"
+      :page-count="pageTotal"
+      size="large"
+      :on-update:page="emitUpdatePage"
+    />
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
+import { computed } from "vue";
 export default {
   name: "PaginationView",
 
@@ -23,12 +29,31 @@ export default {
       default: "10px",
       required: false,
     },
+
+    pageNo: {
+      type: Number,
+      required: true,
+    },
+
+    pageTotal: {
+      type: Number,
+      required: true,
+    },
   },
-  setup() {
-    let page = ref(1);
+
+  emits: ["update:page", "update-page"],
+
+  setup(props) {
     return {
-      page,
+      page: computed(() => props.pageNo),
     };
+  },
+
+  methods: {
+    // 传递更新
+    emitUpdatePage(value) {
+      this.$emit("update-page", value);
+    },
   },
 };
 </script>
