@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-18 22:49:42
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-26 21:23:55
+ * @LastEditTime: 2022-07-26 21:46:41
 -->
 <template>
   <div class="breadcrumb-icon">
@@ -107,6 +107,10 @@ export default {
       const homeHeader = document.getElementById("home-header");
       if (homeHeader !== null) {
         homeHeader.classList.toggle("home-header-fixed");
+        this.store.commit(
+          "SET_FIEXD_HEADER_CLASS",
+          homeHeader.classList.contains("home-header-fixed")
+        );
       }
     },
   },

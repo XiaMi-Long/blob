@@ -4,10 +4,10 @@
  * @Author: wwy
  * @Date: 2022-07-12 09:37:50
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-12 14:51:34
+ * @LastEditTime: 2022-07-26 21:39:36
 -->
 <template>
-  <div class="blob-title-box">
+  <div class="blob-title-box fixed-header-margin">
     <n-space vertical>
       <h2 class="title">Article</h2>
     </n-space>

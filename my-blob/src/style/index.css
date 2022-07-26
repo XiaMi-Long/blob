@@ -9,6 +9,11 @@
   --article-background-color: white;
   /* md文档文字颜色 */
   --article-text-color: black;
+  /* 固定菜单之后,每个页面需要添加的margin大小 */
+  --fixed-header-margin: 0px;
 }
 
-;
+/* 固定头部之后,拥有此class的需要添加margin */
+.fixed-header-margin {
+  margin-top: var(--fixed-header-margin);
+}

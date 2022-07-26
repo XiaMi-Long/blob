@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-26 20:44:51
+ * @LastEditTime: 2022-07-26 22:17:33
  */
 import { createStore } from "vuex";
 import { cssVarUtils, deepCopy } from "@/utils/common/index";
@@ -43,23 +43,38 @@ export default createStore({
       }
     },
 
+    /* 设置固定菜单之后的全局样式更改 */
+    SET_FIEXD_HEADER_CLASS(state, value) {
+      if (value) {
+        setCssVar.setVar("--fixed-header-margin", "65px");
+      } else {
+        setCssVar.setVar("--fixed-header-margin", "0px");
+      }
+    },
+
     /* 设置页码 */
     SET_ACTIVLE_PAGE_NO(state, value) {
       state.homePageObject.pageNo = value;
     },
 
     /* 更新homePageObject状态 */
-    SET_HOME_PAGE_OBJECT(state) {
-      const startSliceNumber =
-        (state.homePageObject.pageNo - 1) * state.homePageObject.pageTotal;
-      const endSliceNumber =
-        state.homePageObject.pageNo * state.homePageObject.pageTotal;
-      console.log(startSliceNumber, endSliceNumber);
-      state.homePageObject.showActivleArray =
-        state.homePageObject.activleArray.slice(
-          startSliceNumber,
-          endSliceNumber
-        );
+    SET_HOME_PAGE_OBJECT(state, { searchValue = "" } = {}) {
+      const { homePageObject: home } = state;
+      let handleArray = home.activleArray;
+
+      // 对搜索词进行过滤
+      if (searchValue !== "") {
+        handleArray = handleArray.filter((item) => {
+          return item.activleTitle.includes(searchValue);
+        });
+      }
+
+      const startSliceNumber = (home.pageNo - 1) * home.pageTotal;
+      const endSliceNumber = home.pageNo * home.pageTotal;
+      home.showActivleArray = handleArray.slice(
+        startSliceNumber,
+        endSliceNumber
+      );
     },
   },
   actions: {},

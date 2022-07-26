@@ -4,18 +4,12 @@
  * @Author: wwy
  * @Date: 2022-07-11 17:28:26
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-26 21:19:52
+ * @LastEditTime: 2022-07-26 22:21:44
 -->
 <template>
   <div class="input-box">
-    <input
-      type="text"
-      class="input"
-      :style="inputWidth"
-      v-model.trim="inputValue"
-      @input="handleInputChange"
-    />
-    <n-icon size="30" @click="handleIconClick" title="搜索">
+    <input type="text" class="input" v-model.trim="inputValue" />
+    <n-icon size="30" @click="handleIconClick" title="搜索" class="search-icon">
       <Search></Search>
     </n-icon>
   </div>
@@ -23,7 +17,8 @@
 
 <script>
 import { Search } from "@vicons/ionicons5";
-import { ref, onMounted } from "vue";
+import { useStore } from "vuex";
+import { ref } from "vue";
 
 export default {
   name: "BreadcrumbInput",
@@ -33,32 +28,19 @@ export default {
   },
 
   setup() {
-    let isShowInput = ref(false);
-    let inputWidth = ref({
-      width: "0%",
-      borderBottom: "none",
-    });
+    const store = useStore();
+
     let inputValue = ref("");
 
-    onMounted(() => {});
-    return { isShowInput, inputWidth, inputValue };
+    return { store, inputValue };
   },
 
   methods: {
     /* 处理点击图标事件 */
     handleIconClick() {
-      this.isShowInput = !this.isShowInput;
-      if (this.isShowInput) {
-        this.inputWidth.width = "50%";
-        this.inputWidth.borderBottom = "2px solid black";
-      } else {
-        this.inputWidth.width = "0%";
-        this.inputWidth.borderBottom = "none";
-      }
-    },
-    /* 处理输入框输入事件 */
-    handleInputChange() {
-      console.log(this.inputValue);
+      this.store.commit("SET_HOME_PAGE_OBJECT", {
+        searchValue: this.inputValue,
+      });
     },
   },
 };
@@ -80,7 +62,7 @@ export default {
     background-color: var(--header-search-input-background-color);
 
     border: 0;
-    border-bottom: 2px dashed black;
+    border-bottom: 2px solid black;
 
     line-height: 25px;
 
@@ -88,11 +70,11 @@ export default {
 
     color: var(--header-search-input-text-color);
 
-    transition: width 1s;
-    &:focus-visible {
-      border: 0;
-      border-bottom: 2px dashed black;
-    }
+    width: 50%;
+  }
+
+  .search-icon {
+    cursor: pointer;
   }
 }
 

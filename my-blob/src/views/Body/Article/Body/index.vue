@@ -4,7 +4,7 @@
     * @Author: wwy
     * @Date: 2022-07-13 22:14:26
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-26 21:31:43
+ * @LastEditTime: 2022-07-26 21:48:02
     -->
 <!--
     * @Descripttion: 
@@ -15,7 +15,7 @@
     * @LastEditTime: 2022-07-16 20:56:40
     -->
 <template>
-  <div class="article-body-box">
+  <div class="article-body-box fixed-header-margin">
     <div class="article-zoom-content content">
       <div id="my-toc-box"></div>
       <div v-html="demoArray" class="code-box"></div>
