@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 16:04:17
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-25 22:50:20
+ * @LastEditTime: 2022-07-26 20:46:21
 -->
 <template>
   <div>
@@ -71,6 +71,7 @@ export default {
     // 处理分页页码更新
     handlePaginationUpdatePage(page) {
       this.store.commit("SET_ACTIVLE_PAGE_NO", page);
+      this.store.commit("SET_HOME_PAGE_OBJECT");
     },
   },
 };

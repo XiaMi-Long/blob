@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 17:28:26
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-18 22:52:30
+ * @LastEditTime: 2022-07-26 21:19:52
 -->
 <template>
   <div class="input-box">
@@ -93,6 +93,12 @@ export default {
       border: 0;
       border-bottom: 2px dashed black;
     }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .input-box {
+    display: none;
   }
 }
 </style>

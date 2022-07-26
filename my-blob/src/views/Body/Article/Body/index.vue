@@ -4,7 +4,7 @@
     * @Author: wwy
     * @Date: 2022-07-13 22:14:26
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-21 22:46:26
+ * @LastEditTime: 2022-07-26 21:31:43
     -->
 <!--
     * @Descripttion: 
@@ -222,6 +222,15 @@ export default {
     color: var(--article-text-color);
 
     transition: background-color 1s, color 1s;
+  }
+}
+
+// 去除内容边距
+@media screen and (max-width: 600px) {
+  .article-body-box {
+    .content {
+      padding: 0;
+    }
   }
 }
 </style>

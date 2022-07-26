@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: wwy
+ * @Date: 2022-07-11 15:56:14
+ * @LastEditors: wwy
+ * @LastEditTime: 2022-07-26 21:27:11
+-->
 <template>
   <div class="breadcrumb-container">
     <div class="logo-search">
@@ -57,6 +65,36 @@ export default {
 
     display: flex;
     align-items: center;
+  }
+}
+@media screen and (max-width: 1300px) {
+  .breadcrumb-container {
+    .logo-search {
+      width: 45%;
+    }
+  }
+}
+@media screen and (max-width: 800px) {
+  .breadcrumb-container {
+    .logo-search {
+      width: 30%;
+    }
+
+    .page-title {
+      width: 60%;
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .breadcrumb-container {
+    .logo-search {
+      width: 10%;
+    }
+
+    .page-title {
+      width: 90%;
+    }
   }
 }
 </style>

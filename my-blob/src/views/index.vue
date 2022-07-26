@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-21 23:09:08
+ * @LastEditTime: 2022-07-26 20:52:26
 -->
 <!--
  * @Descripttion: 
@@ -52,6 +52,10 @@ export default {
 
   setup() {
     const store = useStore();
+
+    // 执行博客文章展示数据初始化
+    store.commit("SET_HOME_PAGE_OBJECT");
+
     const getIsDark = computed(() => store.getters.getIsDark);
     const isDark = computed(() => {
       return getIsDark.value ? darkTheme : null;

@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-16 20:56:47
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-21 22:57:56
+ * @LastEditTime: 2022-07-26 21:33:19
 -->
 <template>
   <div class="article-option-box">
@@ -222,6 +222,13 @@ export default {
         transform: scale(0.7);
       }
     }
+  }
+}
+
+// 隐藏操作
+@media screen and (max-width: 600px) {
+  .article-option-box {
+    display: none;
   }
 }
 </style>

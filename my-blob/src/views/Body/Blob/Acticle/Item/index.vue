@@ -4,12 +4,12 @@
  * @Author: wwy
  * @Date: 2022-07-12 10:58:19
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-25 22:05:01
+ * @LastEditTime: 2022-07-26 20:56:05
 -->
 <template>
   <div class="blob-activle-text-box">
     <!-- 卡片内容 -->
-    <n-card v-for="(item, index) of activleArray" :key="index">
+    <n-card v-for="(item, index) of data" :key="index">
       <template #cover>
         <img
           :src="item.activlePhoto"
@@ -78,7 +78,7 @@ export default {
     },
   },
 
-  setup(prop) {
+  setup() {
     // 为所有图片添加加载异常处理
     const handleImgLoadError = () => {
       const imgs = document.querySelectorAll("img");
@@ -91,7 +91,7 @@ export default {
 
     onMounted(() => handleImgLoadError());
 
-    return { activleArray: prop.data };
+    return {};
   },
 
   methods: {

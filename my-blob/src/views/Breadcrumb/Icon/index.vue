@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-18 22:49:42
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-21 23:08:12
+ * @LastEditTime: 2022-07-26 21:23:55
 -->
 <template>
   <div class="breadcrumb-icon">
@@ -48,7 +48,7 @@
       <template #trigger>
         <n-icon
           size="30"
-          class="option-full-icon option-icon"
+          class="fixed-header-icon option-icon"
           @click="handleFixedIconClick"
         >
           <WebAssetSharp></WebAssetSharp> </n-icon
@@ -122,5 +122,17 @@ export default {
   cursor: pointer;
 
   margin: 0 10px;
+}
+
+@media screen and (max-width: 600px) {
+  .breadcrumb-icon {
+    .option-full-icon {
+      display: none;
+    }
+
+    .fixed-header-icon {
+      display: none;
+    }
+  }
 }
 </style>
