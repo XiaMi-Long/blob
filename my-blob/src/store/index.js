@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-27 22:06:12
+ * @LastEditTime: 2022-07-27 22:53:21
  */
 import { createStore } from "vuex";
 import { cssVarUtils, deepCopy } from "@/utils/common/index";
@@ -28,6 +28,13 @@ export default createStore({
       pageTotal: 6,
       /* 页码总数 */
       pageSum: 0,
+    },
+    /* 数据搜索时的条件 */
+    searchParams: {
+      /* 搜索框 */
+      searchValue: "",
+      /* 日历值 */
+      calendarValue: "",
     },
   },
   getters,
@@ -54,21 +61,43 @@ export default createStore({
       }
     },
 
+    /* 设置搜索参数--搜索框值 */
+    SET_INPUT_VALUE(state, value) {
+      state.searchParams.searchValue = value;
+    },
+
+    /* 设置搜索参数--日历值 */
+    SET_CALENDAR_VALUE(state, value) {
+      state.searchParams.calendarValue = value;
+    },
+
     /* 设置页码 */
     SET_ACTIVLE_PAGE_NO(state, value) {
       state.homePageObject.pageNo = value;
     },
 
     /* 更新homePageObject状态 */
-    SET_HOME_PAGE_OBJECT(state, { searchValue = "" } = {}) {
-      // debugger;
-      const { homePageObject: home } = state;
+    SET_HOME_PAGE_OBJECT(state) {
+      const { homePageObject: home, searchParams: params } = state;
       let handleArray = home.activleArray;
+      let isFilter = false;
 
       // 对搜索词进行过滤
-      if (searchValue !== "") {
+      if (params.searchValue !== "") {
+        isFilter = true;
         handleArray = handleArray.filter((item) => {
-          return item.activleTitle.includes(searchValue);
+          return item.activleTitle.includes(params.searchValue);
+        });
+      }
+
+      // 对日期进行过滤
+      if (params.calendarValue !== "") {
+        isFilter = true;
+        const time = new Date(
+          params.calendarValue.replace(/-/g, "/")
+        ).getTime();
+        handleArray = handleArray.filter((item) => {
+          return item.activleTime === time;
         });
       }
 
@@ -81,12 +110,12 @@ export default createStore({
       );
 
       // 如果是查询全部
-      if (searchValue === "") {
+      if (isFilter == false) {
         home.pageSum = handleArray.length / home.pageTotal;
       }
 
       // 如果带条件
-      if (searchValue !== "") {
+      if (isFilter) {
         home.pageSum = home.showActivleArray.length / home.pageTotal;
       }
     },

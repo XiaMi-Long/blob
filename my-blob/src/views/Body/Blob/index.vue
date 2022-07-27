@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 16:04:17
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-27 22:05:07
+ * @LastEditTime: 2022-07-27 23:03:30
 -->
 <template>
   <div>
@@ -14,7 +14,10 @@
         <BlobActivleView></BlobActivleView>
       </n-gi>
       <n-gi :span="8" class="blob-calendar-view">
-        <BlobCalendarView :timeValue="calendarValue"></BlobCalendarView>
+        <BlobCalendarView
+          :timeValue="calendarValue"
+          @calendar-click="handleCalendarClick"
+        ></BlobCalendarView>
         <BlobArchivesView></BlobArchivesView>
         <BlobTagsView></BlobTagsView>
       </n-gi>
@@ -71,6 +74,19 @@ export default {
     // 处理分页页码更新
     handlePaginationUpdatePage(page) {
       this.store.commit("SET_ACTIVLE_PAGE_NO", page);
+      this.store.commit("SET_HOME_PAGE_OBJECT");
+    },
+
+    // 处理日历选中
+    handleCalendarClick(time) {
+      // 如果是今天,就默认''
+      const selectTime = new Date(time.replace(/-/g, "/")).toDateString();
+      const nowTime = new Date().toDateString();
+      if (selectTime === nowTime) {
+        time = "";
+      }
+
+      this.store.commit("SET_CALENDAR_VALUE", time);
       this.store.commit("SET_HOME_PAGE_OBJECT");
     },
   },

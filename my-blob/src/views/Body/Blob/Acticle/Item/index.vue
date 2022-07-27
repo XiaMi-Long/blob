@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-12 10:58:19
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-27 21:53:32
+ * @LastEditTime: 2022-07-27 22:55:07
 -->
 <template>
   <div class="blob-activle-text-box">
@@ -31,7 +31,9 @@
       <!-- 文章标签和时间 -->
       <div class="time-tag-box">
         <div class="time" title="时间">
-          <n-ellipsis class="tag-time"> {{ item.activleTime }} </n-ellipsis>
+          <n-ellipsis class="tag-time"
+            ><n-time :time="item.activleTime" format="yyyy-MM-dd" />
+          </n-ellipsis>
         </div>
         <div class="tag" title="文章标签">
           <n-radio :checked="true"> </n-radio>

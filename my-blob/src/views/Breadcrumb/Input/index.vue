@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 17:28:26
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-26 22:21:44
+ * @LastEditTime: 2022-07-27 22:16:40
 -->
 <template>
   <div class="input-box">
@@ -38,9 +38,8 @@ export default {
   methods: {
     /* 处理点击图标事件 */
     handleIconClick() {
-      this.store.commit("SET_HOME_PAGE_OBJECT", {
-        searchValue: this.inputValue,
-      });
+      this.store.commit("SET_INPUT_VALUE", this.inputValue);
+      this.store.commit("SET_HOME_PAGE_OBJECT");
     },
   },
 };

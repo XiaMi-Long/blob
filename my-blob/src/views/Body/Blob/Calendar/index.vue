@@ -2,7 +2,13 @@
   <div class="blob-calendar-box">
     <n-card>
       <ElConfigProvider :locale="locale">
-        <ElCalendar :v-model="timeValue"></ElCalendar>
+        <ElCalendar :v-model="timeValue">
+          <template #dateCell="{ data }">
+            <span @click="handleCalendarClick(data.day)">
+              {{ data.day.substr(-2) }}
+            </span>
+          </template>
+        </ElCalendar>
       </ElConfigProvider>
     </n-card>
   </div>
@@ -28,10 +34,18 @@ export default {
     },
   },
 
+  emits: ["calendar-click"],
+
   setup() {
     return {
       locale: zhCn,
     };
+  },
+
+  methods: {
+    handleCalendarClick(time) {
+      this.$emit("calendar-click", time);
+    },
   },
 };
 </script>
