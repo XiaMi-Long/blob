@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-12 10:58:19
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-26 20:56:05
+ * @LastEditTime: 2022-07-27 21:53:32
 -->
 <template>
   <div class="blob-activle-text-box">
@@ -63,11 +63,36 @@
         </n-space>
       </div>
     </n-card>
+
+    <!-- 没有搜索到内容时展示 -->
+    <n-card class="empty-card" v-if="isShowEmpty">
+      <div class="empty-text">
+        <p>
+          对于命途多舛的人生，以及渺茫的时间，阻挡在我们之间这一事实，我们无可奈何。
+        </p>
+        <p>
+          时间并没有放慢脚步，季节不停地在变化，而你我之间的距离也越来越远。
+        </p>
+        <p>
+          我们之间即使互通了一千多条短信，彼此间心的距离也仅仅靠近了一厘米。
+        </p>
+        <p>昨晚，梦到了以前的事，梦里的我和他还是孩子。</p>
+        <p>只是过着生活，但令人悲伤的事到处积累着。</p>
+        <p>-------------------《秒速五厘米》</p>
+      </div>
+      <!-- 空内容 -->
+      <n-empty description="你找到以前了吗？" size="huge">
+        <template #icon></template>
+        <template #extra>
+          <n-button size="small"> 回到最初的地方 </n-button>
+        </template>
+      </n-empty>
+    </n-card>
   </div>
 </template>
 
 <script>
-import { onMounted } from "vue";
+import { onMounted, computed } from "vue";
 export default {
   name: "BlobActivleTextView",
 
@@ -78,7 +103,7 @@ export default {
     },
   },
 
-  setup() {
+  setup(props) {
     // 为所有图片添加加载异常处理
     const handleImgLoadError = () => {
       const imgs = document.querySelectorAll("img");
@@ -89,9 +114,12 @@ export default {
       });
     };
 
+    // 判断数据条数是否为0
+    const isShowEmpty = computed(() => props.data.length === 0);
+
     onMounted(() => handleImgLoadError());
 
-    return {};
+    return { isShowEmpty };
   },
 
   methods: {
@@ -173,6 +201,15 @@ export default {
       align-items: center;
 
       font-weight: bold;
+    }
+  }
+
+  .empty-card {
+    width: 100%;
+    height: 600px;
+
+    .empty-text {
+      text-align: left;
     }
   }
 }

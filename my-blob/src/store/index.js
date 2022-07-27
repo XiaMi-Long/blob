@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-26 22:17:33
+ * @LastEditTime: 2022-07-27 22:06:12
  */
 import { createStore } from "vuex";
 import { cssVarUtils, deepCopy } from "@/utils/common/index";
@@ -26,6 +26,8 @@ export default createStore({
       pageNo: 1,
       /* 每页条数 */
       pageTotal: 6,
+      /* 页码总数 */
+      pageSum: 0,
     },
   },
   getters,
@@ -59,6 +61,7 @@ export default createStore({
 
     /* 更新homePageObject状态 */
     SET_HOME_PAGE_OBJECT(state, { searchValue = "" } = {}) {
+      // debugger;
       const { homePageObject: home } = state;
       let handleArray = home.activleArray;
 
@@ -71,10 +74,21 @@ export default createStore({
 
       const startSliceNumber = (home.pageNo - 1) * home.pageTotal;
       const endSliceNumber = home.pageNo * home.pageTotal;
+
       home.showActivleArray = handleArray.slice(
         startSliceNumber,
         endSliceNumber
       );
+
+      // 如果是查询全部
+      if (searchValue === "") {
+        home.pageSum = handleArray.length / home.pageTotal;
+      }
+
+      // 如果带条件
+      if (searchValue !== "") {
+        home.pageSum = home.showActivleArray.length / home.pageTotal;
+      }
     },
   },
   actions: {},

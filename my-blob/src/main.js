@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-20 20:27:45
+ * @LastEditTime: 2022-07-27 21:50:40
  */
 import { createApp } from "vue";
 import App from "./App.vue";
@@ -18,11 +18,13 @@ import {
   create,
   // component
   NButton,
+  NImage,
   NSpace,
   NMenu,
   NLayout,
   NIcon,
   NCard,
+  NEmpty,
   NGrid,
   NGridItem,
   NLayoutHeader,
@@ -34,16 +36,19 @@ import {
   NTooltip,
   NConfigProvider,
   NMessageProvider,
+  NSkeleton,
 } from "naive-ui";
 
 const naive = create({
   components: [
     NButton,
     NSpace,
+    NImage,
     NMenu,
     NLayout,
     NIcon,
     NCard,
+    NEmpty,
     NGrid,
     NGridItem,
     NLayoutHeader,
@@ -55,6 +60,7 @@ const naive = create({
     NTooltip,
     NConfigProvider,
     NMessageProvider,
+    NSkeleton,
   ],
 });
 

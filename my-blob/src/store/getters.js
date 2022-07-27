@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-18 22:06:52
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-26 21:59:25
+ * @LastEditTime: 2022-07-27 22:03:48
  */
 const getters = {
   getIsDark: (state) => state.isDark,
@@ -16,12 +16,7 @@ const getters = {
   getShowActivleArray: (state) => state.homePageObject.showActivleArray,
 
   /* 返回页码总数 */
-  getHomePageTotal: (state) => {
-    return Math.ceil(
-      state.homePageObject.showActivleArray.length /
-        state.homePageObject.pageTotal
-    );
-  },
+  getHomePageSum: (state) => state.homePageObject.pageSum,
 };
 
 export default getters;

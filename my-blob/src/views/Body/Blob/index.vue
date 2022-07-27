@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 16:04:17
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-26 20:46:21
+ * @LastEditTime: 2022-07-27 22:05:07
 -->
 <template>
   <div>
@@ -24,7 +24,7 @@
         <PaginationView
           margin="100px 0 70px 0 "
           :pageNo="pageNo"
-          :pageTotal="pageTotal"
+          :pageSum="pageSum"
           @update-page="handlePaginationUpdatePage"
         ></PaginationView>
       </n-gi>
@@ -63,7 +63,7 @@ export default {
       store,
       calendarValue,
       pageNo: computed(() => store.getters.getHomePageNo),
-      pageTotal: computed(() => store.getters.getHomePageTotal),
+      pageSum: computed(() => store.getters.getHomePageSum),
     };
   },
 

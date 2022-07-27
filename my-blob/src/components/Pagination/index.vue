@@ -4,14 +4,14 @@
  * @Author: wwy
  * @Date: 2022-07-12 17:44:57
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-25 22:47:14
+ * @LastEditTime: 2022-07-27 22:05:27
 -->
 
 <template>
   <div class="pagination-view" :style="{ margin: margin }">
     <n-pagination
       v-model:page="page"
-      :page-count="pageTotal"
+      :page-count="pageSum"
       size="large"
       :on-update:page="emitUpdatePage"
     />
@@ -35,7 +35,7 @@ export default {
       required: true,
     },
 
-    pageTotal: {
+    pageSum: {
       type: Number,
       required: true,
     },
