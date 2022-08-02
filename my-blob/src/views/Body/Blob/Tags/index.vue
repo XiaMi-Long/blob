@@ -4,15 +4,32 @@
  * @Author: wwy
  * @Date: 2022-07-12 17:28:00
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-12 17:41:55
+ * @LastEditTime: 2022-08-02 22:51:29
 -->
 <template>
   <div class="blob-tags-view">
     <div class="content">
       <div class="title">Tags</div>
       <div class="body">
-        <div class="body-item" v-for="(item, index) of tagsArray" :key="index">
-          {{ item }}
+        <div
+          class="body-item"
+          v-for="(item, index) of filterSelectTags"
+          :key="index"
+          @click="selectTagsClick(item)"
+        >
+          {{ item.label }}
+          <n-icon size="15">
+            <ClearRound></ClearRound>
+          </n-icon>
+        </div>
+
+        <div
+          class="body-item"
+          v-for="(item, index) of filterNoSelectTags"
+          :key="index"
+          @click="tagsClick(item)"
+        >
+          {{ item.label }}
         </div>
       </div>
     </div>
@@ -20,21 +37,56 @@
 </template>
 
 <script>
+import { useStore } from "vuex";
+import { computed, ref } from "vue";
+import { ClearRound } from "@vicons/material";
 export default {
   name: "BlobTagsView",
+
+  components: {
+    ClearRound,
+  },
+
   setup() {
-    const tagsArray = [
-      "HTML",
-      "CSS",
-      "JAVASCRIPT",
-      "JAVA",
-      "PHP",
-      "C",
-      "C#",
-      "C++",
-      "WINDOW",
-    ];
-    return { tagsArray };
+    const store = useStore();
+
+    const tagsArray = ref(store.getters.getTagsArray);
+
+    const filterNoSelectTags = computed(() =>
+      tagsArray.value.filter((item) => item.isShow)
+    );
+    const filterSelectTags = computed(() =>
+      tagsArray.value.filter((item) => !item.isShow)
+    );
+    const filterSelectTagsById = computed(() =>
+      filterSelectTags.value.map((item) => item.id)
+    );
+
+    tagsArray.value.forEach((item) => {
+      item.isShow = true;
+    });
+
+    return {
+      filterSelectTags,
+      filterNoSelectTags,
+      filterSelectTagsById,
+      tagsArray,
+      store,
+    };
+  },
+
+  methods: {
+    tagsClick(item) {
+      item.isShow = false;
+      this.store.commit("SET_TAGS", this.filterSelectTagsById);
+      this.store.commit("SET_HOME_PAGE_OBJECT");
+    },
+
+    selectTagsClick(item) {
+      item.isShow = true;
+      this.store.commit("SET_TAGS", this.filterSelectTagsById);
+      this.store.commit("SET_HOME_PAGE_OBJECT");
+    },
   },
 };
 </script>
@@ -47,8 +99,6 @@ export default {
 
   .content {
     box-shadow: $card-shadow;
-
-    min-height: 250px;
 
     background-color: white;
 
@@ -70,12 +120,17 @@ export default {
       display: flex;
       flex-wrap: wrap;
 
+      background-color: var(--home-hot-tags-card-background-color);
+
       .body-item {
+        display: flex;
+        align-items: center;
+
         padding: 10px;
 
         color: white;
 
-        background-color: #cfd8dc;
+        background-color: var(--home-tags-card-item-background-color);
 
         border-radius: 4px;
 

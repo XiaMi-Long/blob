@@ -4,16 +4,23 @@
  * @Author: wwy
  * @Date: 2022-07-12 16:54:07
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-12 17:22:21
+ * @LastEditTime: 2022-07-28 15:31:13
 -->
 <template>
   <div class="blob-archives-box">
     <div class="content">
-      <div class="title">Archives</div>
+      <div class="title">Hot</div>
       <div class="body">
-        <li class="body-item" v-for="(item, index) of 6" :key="index">
-          {{ Number(`201${index}`) + 1 }}
-          <div class="sum">{{ index + 1 }}</div>
+        <li
+          class="body-item"
+          v-for="(item, index) of hots"
+          :key="index"
+          @click="handleBlobTitleClick(item.activleId)"
+        >
+          <n-ellipsis>
+            {{ item.activleTitle }}
+          </n-ellipsis>
+          <!-- <div class="sum">{{ index + 1 }}</div> -->
         </li>
       </div>
     </div>
@@ -22,9 +29,25 @@
 
 <script>
 export default {
-  name: "BlobArchivesView",
+  name: "BlobHotView",
+
+  props: {
+    hots: {
+      type: Array,
+      required: true,
+    },
+  },
+
+  emits: ["title-click"],
+
   setup() {
     return {};
+  },
+
+  methods: {
+    handleBlobTitleClick(id) {
+      this.$emit("title-click", id);
+    },
   },
 };
 </script>
@@ -56,6 +79,8 @@ export default {
     .body {
       padding: 15px 10px;
 
+      background-color: var(--home-hot-tags-card-background-color);
+
       &-item {
         text-align: left;
 
@@ -73,8 +98,9 @@ export default {
         justify-content: space-between;
 
         transition: padding-left 0.7s;
+
         &:hover {
-          padding-left: 45px;
+          padding-left: 20px;
 
           border-bottom: 1px solid #1de9b6;
         }

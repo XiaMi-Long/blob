@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-12 10:58:19
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-27 22:55:07
+ * @LastEditTime: 2022-08-02 21:25:45
 -->
 <template>
   <div class="blob-activle-text-box">
@@ -86,7 +86,9 @@
       <n-empty description="你找到以前了吗？" size="huge">
         <template #icon></template>
         <template #extra>
-          <n-button size="small"> 回到最初的地方 </n-button>
+          <n-button size="small" @click="backSearchClick">
+            回到最初的地方
+          </n-button>
         </template>
       </n-empty>
     </n-card>
@@ -94,6 +96,7 @@
 </template>
 
 <script>
+import { useStore } from "vuex";
 import { onMounted, computed } from "vue";
 export default {
   name: "BlobActivleTextView",
@@ -106,6 +109,8 @@ export default {
   },
 
   setup(props) {
+    const store = useStore();
+
     // 为所有图片添加加载异常处理
     const handleImgLoadError = () => {
       const imgs = document.querySelectorAll("img");
@@ -121,13 +126,19 @@ export default {
 
     onMounted(() => handleImgLoadError());
 
-    return { isShowEmpty };
+    return { store, isShowEmpty };
   },
 
   methods: {
     /* 处理查看更多 */
     handleSeeMoreClick(id) {
       this.$router.push(`/article/${id}`);
+    },
+
+    /* 回到最初的地方 */
+    backSearchClick() {
+      this.store.commit("SET_INPUT_VALUE", "");
+      this.store.commit("SET_HOME_PAGE_OBJECT");
     },
   },
 };

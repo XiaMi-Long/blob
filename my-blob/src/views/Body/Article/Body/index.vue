@@ -4,7 +4,7 @@
     * @Author: wwy
     * @Date: 2022-07-13 22:14:26
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-26 21:48:02
+ * @LastEditTime: 2022-08-02 22:52:45
     -->
 <!--
     * @Descripttion: 
@@ -90,9 +90,9 @@ export default {
       aHrefArray.value.forEach((ele) => {
         const div = document.createElement("div");
         div.style.textIndent = tocOffsetConfig[`h${ele.label}`] + "em";
-        div.innerHTML = `<h${ele.label}>
+        div.innerHTML = `<h3>
                                 <a class="my-toc-box-a" href="#${ele.text}">${ele.text}</a>
-                              </h${ele.label}>`;
+                              </h3>`;
         fragment.appendChild(div);
       });
       document.getElementById("my-toc-box").appendChild(fragment);
@@ -265,21 +265,6 @@ export default {
   overflow: auto;
 
   margin-bottom: 60px;
-
-  div::before {
-    content: "";
-
-    width: 7px;
-    height: 7px;
-
-    border-radius: 50%;
-
-    background-color: var(--catalogue-text-color);
-
-    display: inline-block;
-
-    transition: color 0.5s, background-color 0.5s;
-  }
 
   .my-toc-box-a {
     text-decoration: none;

@@ -11,6 +11,10 @@
   --article-text-color: black;
   /* 固定菜单之后,每个页面需要添加的margin大小 */
   --fixed-header-margin: 0px;
+  /* 首页Hot卡片和Tags卡片的背景颜色 */
+  --home-hot-tags-card-background-color: #ffffff;
+  /* Tags卡片里面每一项的背景颜色 */
+  --home-tags-card-item-background-color: #b1b8bb;
 }
 
 /* 固定头部之后,拥有此class的需要添加margin */

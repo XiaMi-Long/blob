@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 16:04:17
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-27 23:03:30
+ * @LastEditTime: 2022-07-28 15:30:27
 -->
 <template>
   <div>
@@ -14,11 +14,10 @@
         <BlobActivleView></BlobActivleView>
       </n-gi>
       <n-gi :span="8" class="blob-calendar-view">
-        <BlobCalendarView
-          :timeValue="calendarValue"
-          @calendar-click="handleCalendarClick"
-        ></BlobCalendarView>
-        <BlobArchivesView></BlobArchivesView>
+        <BlobHotView
+          :hots="hotsBlob"
+          @title-click="handleBlobTitleClick"
+        ></BlobHotView>
         <BlobTagsView></BlobTagsView>
       </n-gi>
     </n-grid>
@@ -38,12 +37,11 @@
 <script>
 import BlobTitleView from "./Title/index.vue";
 import BlobActivleView from "./Acticle/index.vue";
-import BlobCalendarView from "./Calendar/index.vue";
-import BlobArchivesView from "./Archives/index.vue";
+import BlobHotView from "./Hot/index.vue";
 import BlobTagsView from "./Tags/index.vue";
 import PaginationView from "@/components/Pagination/index.vue";
 
-import { ref, computed } from "vue";
+import { computed } from "vue";
 import { useStore } from "vuex";
 
 export default {
@@ -51,8 +49,7 @@ export default {
   components: {
     BlobTitleView,
     BlobActivleView,
-    BlobCalendarView,
-    BlobArchivesView,
+    BlobHotView,
     BlobTagsView,
     PaginationView,
   },
@@ -60,11 +57,9 @@ export default {
   setup() {
     const store = useStore();
 
-    let calendarValue = ref(new Date());
-
     return {
       store,
-      calendarValue,
+      hotsBlob: computed(() => store.getters.getHotBlob),
       pageNo: computed(() => store.getters.getHomePageNo),
       pageSum: computed(() => store.getters.getHomePageSum),
     };
@@ -77,17 +72,10 @@ export default {
       this.store.commit("SET_HOME_PAGE_OBJECT");
     },
 
-    // 处理日历选中
-    handleCalendarClick(time) {
-      // 如果是今天,就默认''
-      const selectTime = new Date(time.replace(/-/g, "/")).toDateString();
-      const nowTime = new Date().toDateString();
-      if (selectTime === nowTime) {
-        time = "";
-      }
-
-      this.store.commit("SET_CALENDAR_VALUE", time);
-      this.store.commit("SET_HOME_PAGE_OBJECT");
+    // 处理hot标题被点击
+    handleBlobTitleClick(id) {
+      console.log(id);
+      this.$router.push(`/article/${id}`);
     },
   },
 };

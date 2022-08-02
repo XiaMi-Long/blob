@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-27 22:53:21
+ * @LastEditTime: 2022-08-02 22:49:14
  */
 import { createStore } from "vuex";
 import { cssVarUtils, deepCopy } from "@/utils/common/index";
@@ -25,7 +25,7 @@ export default createStore({
       /* 页码 */
       pageNo: 1,
       /* 每页条数 */
-      pageTotal: 6,
+      pageTotal: 4,
       /* 页码总数 */
       pageSum: 0,
     },
@@ -33,8 +33,8 @@ export default createStore({
     searchParams: {
       /* 搜索框 */
       searchValue: "",
-      /* 日历值 */
-      calendarValue: "",
+      /* 文章分类 */
+      tags: [],
     },
   },
   getters,
@@ -46,9 +46,13 @@ export default createStore({
       if (value) {
         setCssVar.setVar("--header-search-input-background-color", "#18181c");
         setCssVar.setVar("--header-search-input-text-color", "white");
+        setCssVar.setVar("--home-hot-tags-card-background-color", "#18181c");
+        setCssVar.setVar("--home-tags-card-item-background-color", "#323239");
       } else {
         setCssVar.setVar("--header-search-input-background-color", "white");
         setCssVar.setVar("--header-search-input-text-color", "black");
+        setCssVar.setVar("--home-hot-tags-card-background-color", "#ffffff");
+        setCssVar.setVar("--home-tags-card-item-background-color", "#b1b8bb");
       }
     },
 
@@ -66,6 +70,11 @@ export default createStore({
       state.searchParams.searchValue = value;
     },
 
+    /* 设置搜索参数--文章分类 */
+    SET_TAGS(state, value) {
+      state.searchParams.tags = value;
+    },
+
     /* 设置搜索参数--日历值 */
     SET_CALENDAR_VALUE(state, value) {
       state.searchParams.calendarValue = value;
@@ -80,24 +89,29 @@ export default createStore({
     SET_HOME_PAGE_OBJECT(state) {
       const { homePageObject: home, searchParams: params } = state;
       let handleArray = home.activleArray;
-      let isFilter = false;
+      let isSearchFilter = false;
+      let isTagsFilter = false;
 
       // 对搜索词进行过滤
       if (params.searchValue !== "") {
-        isFilter = true;
+        isSearchFilter = true;
         handleArray = handleArray.filter((item) => {
           return item.activleTitle.includes(params.searchValue);
         });
       }
 
-      // 对日期进行过滤
-      if (params.calendarValue !== "") {
-        isFilter = true;
-        const time = new Date(
-          params.calendarValue.replace(/-/g, "/")
-        ).getTime();
+      // 对分类进行过滤
+      if (params.tags.length !== 0) {
+        isTagsFilter = true;
         handleArray = handleArray.filter((item) => {
-          return item.activleTime === time;
+          if (item.tags) {
+            for (const iterator of item.tags) {
+              if (params.tags.includes(iterator)) {
+                return true;
+              }
+            }
+          }
+          return false;
         });
       }
 
@@ -110,13 +124,13 @@ export default createStore({
       );
 
       // 如果是查询全部
-      if (isFilter == false) {
-        home.pageSum = handleArray.length / home.pageTotal;
+      if (isSearchFilter === false || isTagsFilter === true) {
+        home.pageSum = Math.ceil(handleArray.length / home.pageTotal);
       }
 
       // 如果带条件
-      if (isFilter) {
-        home.pageSum = home.showActivleArray.length / home.pageTotal;
+      if (isSearchFilter) {
+        home.pageSum = Math.ceil(home.showActivleArray.length / home.pageTotal);
       }
     },
   },

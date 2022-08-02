@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 17:28:26
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-27 22:16:40
+ * @LastEditTime: 2022-08-02 21:30:30
 -->
 <template>
   <div class="input-box">
@@ -18,7 +18,7 @@
 <script>
 import { Search } from "@vicons/ionicons5";
 import { useStore } from "vuex";
-import { ref } from "vue";
+import { computed, watch, ref } from "vue";
 
 export default {
   name: "BreadcrumbInput",
@@ -31,6 +31,11 @@ export default {
     const store = useStore();
 
     let inputValue = ref("");
+    let getSearchValue = computed(() => store.getters.getSearchValue);
+
+    watch(getSearchValue, (newValue) => {
+      inputValue.value = newValue;
+    });
 
     return { store, inputValue };
   },

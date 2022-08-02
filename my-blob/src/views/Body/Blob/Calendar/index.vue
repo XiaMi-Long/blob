@@ -1,4 +1,5 @@
 <template>
+  <!-- 此页面暂时已废弃 -->
   <div class="blob-calendar-box">
     <n-card>
       <ElConfigProvider :locale="locale">
