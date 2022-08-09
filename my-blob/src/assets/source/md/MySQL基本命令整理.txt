@@ -1,0 +1,342 @@
+# mysql数据库学习文档
+
+* mysql -- 关系型数据库 （表与表之间建立关系）
+* RDBMS -- 关系型数据库管理系统
+* cmd：进入mysql数据语句：mysql -u用户名 -p用户名
+  * 例：mysql -uroot -proot 
+  * 退出：exit 或者quit
+
+* net stop mysql :停止mysql的服务
+
+* net start mysql： 启动mysql的服务
+
+* win + R 输入：regedit 打开注册表
+
+  ### 数据库操作
+
+* 显示所有数据库名称： show databases;（记得加分号）
+
+* 切换数据库（进入数据库） use 数据库名称 
+
+  * 例：use syss;
+
+* 创建数据库 : create database 数据库名;
+  * 详细语句：create database if not exists 数据库名  ---如果不存在则创建
+    * 例：create database if not exists wwy;
+  * 详细语句：create database  数据库名 编码  ---设置表编码
+
+* 删除数据库：drop database 数据库名
+  
+  * 详细语句：drop database if  exists 数据库名 ---如果存在则删除
+
+### MySQL数据类型
+
+* int 整型
+
+* double： 浮点数，例：double（5，2）表示最多五位，小数必须有2位小数，即最大值为999.99
+
+* decimal：浮点数，在钱方面使用该类型，因为没有精度计算问题、
+
+* char：固定长度字符串类型：char（255）
+
+* varchar:可变长度字符串类型
+
+* text(clob)：字符串类型
+
+* blob：字节类型
+
+* data:日期类型
+
+* time:时间类型
+
+* timetamp:时间戳类型
+
+  
+
+### 表操作
+
+* 创建表：
+
+  * create table (if not exists) 表名(
+
+    * 列名 列类型，列名 列类型， 列名 列类型，
+      * )
+
+    * 例：`create table if not exists wwytable(demo1 int, demo2 varchar(200), demo3 varchar(255), demo4 int)；`
+
+* 查看所有表： show tables;
+* 查看表结构： desc 表名; 
+  * 例：desc wwytable;
+
+* 删除表 drop table 表名; 
+
+* 修改表:
+
+  * 修改--添加列：
+    * alter table 表名 add（列名 列类型， 列名 列类型，...);
+    * 例： `alter table  wwytable add(demo5 varchar(20),demo6 int);`
+
+  * 修改--修改列类型：（如果被修改的列已存在数据，那么新的类型可能会影响到已存在数据）alter table 表名 MODIFY 列名 列类型;
+    * 例：`alter table wwytable2 MODIFY demo2 int;`
+  * 修改--修改列名：alter table 表名 change 原列名 新列名 列类型；
+    * 例：`alter table wwytable2 change demo1 demoNew int;`
+  * 修改--删除列： alter table 表名 drop 列名；
+    * 例：`alter table wwytable1 drop demo2;`
+  * 修改表名称：alter table 原表名 rename to 新表名；
+    * 例：`alter table wwytable2 rename to wwytable1;`
+
+### 增删改
+
+* 增
+  * insert into 表名 (列名) values（值）;
+  * insert into 表名 values(值)   默认插入所有列，值的顺序与创建表的顺序一致；
+
+* 修改
+
+  * update 表名 set 列名 = 值 where 条件;(否则全部更改)
+  *  `update demo set demo1 = 102 where demo3 = '李四' or demo3 = '张三';`
+
+  or : 或者
+
+* 删除
+  
+  * delete from 表名 where 条件
+
+#### 运算符: 
+
+1. = 、!=、>、<、>=、<=
+
+2. between...and(居于什么什么之间
+
+和比如：where age >= 28 and age <= 50;一个意思
+
+`例： update demo set demo1 = 999 where demo2 between 100 and 888;`
+
+3. in(`例：update demo set demo1 = 1024 where demo3 in ('张三','李四');`
+4. Not
+
+6. or 
+
+7. and
+
+8. is null(想以某个值是否为null为条件不可以写=null应该写is null)
+
+   1. 例：`update demo set demo1 =6666 where demo2 is not null;`
+
+      ```sql
+      update demo set demo1 = 996 where demo2 is null;
+      ```
+
+   
+
+   
+
+ ### 用户操作
+
+* 创建用户:
+  * create user 用户名@ip identified by '密码';
+  * 例：` create user gongqingrong@localhost identified by '123';`
+  * create user 用户名@‘%’ identified by '密码';（不受ip限制）
+
+* 授权
+  *  grant 权限1，权限2... on 数据库.表名等 to 用户名@ip;
+  * 例： grant all on wwy.* to gongqingrong@localhost;
+* 撤销授权
+  * revoke 权限1，权限2... on 数据库.*  from 用户名@ip地址;
+  * 例:`revoke delete on wwy.* from gongqingrong@localhost;`
+
+ * 查看权限
+   	* show grants for 用户名@ip
+      	* 例:`show grants for gongqingrong@localhost;`
+
+* 删除用户
+  * drop user 用户名@ip
+
+
+
+* 查询
+
+  * select * from 表名
+  * select distinct  * from 表名 ---distinct 去重
+  * 列运算：
+    * 数据类型的列可以做加减乘除运算
+    * 例：`select age*5 from 表名`
+
+  * 字符串类型可以用来连接
+    * 例：` select concat('连接字符串',demo3,demo1,demo2,'连接完毕') from demo;`
+
+  * 转换null值，把null值转换为其他的值
+    * select ifnull(age, '年龄') from demo;
+    * 例：`select ifnull(demo1,'年龄'),demo2,demo3 from demo;`
+
+  * 别名 
+    * as 
+    * 例给列起别名：`select demo1 as 年龄,demo2 as 性别,demo3 as 姓名 from demo;`
+
+  * 模糊查询
+    * like 条件
+    * like '张_' 匹配一个字符
+    * like '_张__' 匹配二个字符...
+    * like '%张%' %：匹配0-N个字符
+
+  * 排序
+
+    * order by 排序列 默认升序
+    * 升序例：`select * from demo order by demo2 asc;`
+    * 降序例：` select * from demo order by demo2 desc;`
+    * 可以使用多列排序，防止第一次排序还会剩余重复数据
+      * 例： `select * from demo order by demo2 desc,demo1 asc;`
+
+  * 聚合函数
+
+    * select count(*) from demo;   不计算为null的（列必须为全null才能为null）
+    * select count(1) from demo;  写数字和*是一个意思
+    * select sum(demo1) from demo; 
+      * 例：`select sum(demo2) from demo;`
+      * 字符串会被当成0
+
+    * select max(demo1) from demo;   最大
+    * select min(demo1) from demo;   最小
+    * select avg(demo1) from demo;    平均值
+
+  * 分组查询
+
+    * 分组查询必须和聚合函数一起使用
+    * group by 分组列
+    * 例：`select demo3 ,count(*) from demo group by demo3;`查询demo3的列并分组，聚合函数为个数
+
+    * where 要加在排序前面
+      * 例：`select demo3 ,count(*) from demo where demo3 like '卡_' group by demo3;`  排序但条件为demo3姓名为卡+一个字符的名字
+
+    * having 分组后条件
+      * 例：`select demo3 ,count(*) from demo group by demo3 having count(*) > 1;`查询姓名分组个数，并且个数大于1的分组
+
+    * 这几个关键字在一起时的执行顺序
+      * select --- from --- where -group by -having - order by
+      * 先查询，然后加条件，加分组，加分组后的条件，然后排序
+
+  * limit （方言）
+
+    * limit 从第几行开始 , 一次显示几行
+    * 例：` select * from demo limit 0,2` 一次显示2行数据，从第零行开始.
+
+    * limit 计算的方法:(当前页 -1) * 每页记录数
+
+
+
+### 编码
+
+	* show variables like 'char%';   ----查询编码
+
+### 备份 数据库内容
+
+*  mysqldump -u 用户名 -p密码 数据库名>路径+文件名
+   *    例：mysqldump -uroot -proot syss>D:/文件名.sql  （.sql文件不是必需）
+
+### 恢复数据库内容
+
+* mysql -u用户名 -p密码 数据库名<要恢复的文件名和路径
+
+* 或者登陆之后用 source 文件路径
+
+  
+
+### 主键约束（唯一标识）
+
+* primary key
+
+* 特点:非空、唯一、被引用
+* `create table emp(empon int primary key,enname varchar(30));` 第一种方式
+* `create table emp(empon int ,enname varchar(30),primary key(empon));` 第二种方式
+* `alter table emp add primary key (列名)`非建表时加主键约束
+* `alter table  drop emp primary key`删除主键
+
+### 主键主增长（主键约束特性）
+
+* auto_increment (必须是一个整数列)
+  * 例：` alter table demo modify demo1 int auto_increment;`
+* 推荐使用uuid做为主键自增长
+
+### 非空
+
+* not null
+  * 例:`alter table demo modify demo1 int not null;`
+
+### 唯一约束
+
+* unique
+  * 例：`alter table demo modify demo1 int unique;`
+* 不能设置重复的值
+
+### 概念模型
+
+	##### 外键 
+
+* 外键必须引是另一个表的主键的值（外键要引用主键）
+
+* 外键可以重复
+
+* 外键可以为空
+
+* 一张表中可以多个外键
+
+  
+
+### 多表查询
+
+* 连接查询
+  * 内连接
+    
+    * 方言：`select * from 表名1,表名2 where 条件`
+    * 标准：`select * from 表1 别名1 inner join 表2 别名2 on 别名1.xx = 别名2.xx`
+      * 例：`select type.create_by,type.create_time
+        ,`data`.css_class,`data`.dict_code from sys_dict_type as type inner join 
+        sys_dict_data as `data` ON 1 = 1;`
+    * 自然连接：select * from 表1 别名1 natural join 表2 别名2 
+      * 会自动寻找对应的条件进行去重，比如一样的列名
+    
+  * 外连接：外连接有一主一次，左外即左表为主！主表中所以的记录无论满足不满足条件，都打印出来，当不满足条件时，右表信息用null补位（null可以用ifnull函数来进行数据的填充）。
+  
+    * 左外连接：left outer join
+  
+      * 例：`select a.applyUsername,a.applySex,u.idCard
+        from apply as a left outer join sys_user as u
+        on 1 = 1`
+  
+    * 右外连接：right outer join
+  
+      * 例：`select a.techConent,a.applySex,u.idCard
+        from apply as a right outer join sys_user as u
+        on 1 = 1`
+  
+    * 可以通过合并结果集来实现全外（左外和右外同时存在）
+  
+      * 例：`select a.techConent,a.applySex,u.idCard
+        from apply as a right outer join sys_user as u
+        on 1 = 1
+        UNION all
+        select a.techConent,a.applySex,u.idCard
+        from apply as a left outer join sys_user as u
+        on 1 = 1`
+  
+      
+  
+* 子查询
+
+  * 查询中有查询
+    * 例：`select * from apply where id = (select 	MAX(id) from apply);`
+  * 出现的位置：
+    * where 后做为条件存在
+    * from后作为表存在(多行多列)进行二次查询
+  * 多行多列
+
+* 合并结果集
+  
+  * union all （要求两个结果集（结果集=查询出的结果）列的类型和列数相同）
+  * inion：去除重复行
+  * union all ：不去除重复行
+  * 例：`select * from ab union all select * from bc`
+  * `select demo from ab union select demo1 from bc`
+
+
+

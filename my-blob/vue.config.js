@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-08-08 17:55:27
+ * @LastEditTime: 2022-08-10 01:41:58
  */
 const { defineConfig } = require("@vue/cli-service");
 const CopyPlugin = require("copy-webpack-plugin");
@@ -48,6 +48,9 @@ module.exports = defineConfig({
           { from: "src/assets/images/system-images", to: "img/system-images" },
           { from: "public/config.js", to: "" },
           { from: "public/favicon.ico", to: "" },
+          { from: "public/robots.txt", to: "" },
+          { from: "public/sitemap.xml", to: "" },
+          { from: "public/manifest.json", to: "" },
         ],
       },
     ]);

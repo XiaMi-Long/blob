@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-12 16:54:07
  * @LastEditors: wwy
- * @LastEditTime: 2022-08-09 21:41:41
+ * @LastEditTime: 2022-08-10 01:11:26
 -->
 <template>
   <div class="blob-archives-box">
@@ -103,12 +103,14 @@ export default {
         display: flex;
         justify-content: space-between;
 
-        transition: padding-left 0.7s;
+        transition: padding-left 0.7s, font-style 0.7s;
 
         &:hover {
           padding-left: 20px;
 
           border-bottom: 1px solid #1de9b6;
+
+          font-style: italic;
         }
         .sum {
           color: #90a4c0;

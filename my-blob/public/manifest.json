@@ -1,0 +1,17 @@
+{
+  "short_name": "green tea",
+  "name": "green tea",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "type": "image/svg+xml",
+      "sizes": "32x32"
+    }
+  ],
+  "start_url": "/home",
+  "background_color": "#3367D6",
+  "display": "browser",
+  "scope": "/",
+  "description": "分享博客",
+  "用途": "添加网络应用清单"
+}

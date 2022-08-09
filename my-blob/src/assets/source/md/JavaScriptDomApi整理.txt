@@ -1,0 +1,276 @@
+### nodeType 表示节点的类型
+
+每个节点都有 nodeType 属性，表示该节点的类型。节点类型由定义在 Node 类型上的 12 个数值 常量表示
+
+```js
+节点类型可通过与这些常量比较来确定，比如：
+if (someNode.nodeType == Node.ELEMENT_NODE){ 
+ alert("Node is an element."); 
+} nodeName 与NodeValue
+```
+
+### nodeName 与 nodeValue 保存有关节点的信息
+
+nodeName 与 nodeValue 保存着有关节点的信息。这两个属性的值完全取决于节点类型。在使用 这两个属性前，最好先检测节点类型
+
+```js
+if (someNode.nodeType == 1){ 
+ value = someNode.nodeName; // 会显示元素的标签名
+} 
+```
+
+在这个例子中，先检查了节点是不是元素。如果是，则将其 nodeName 的值赋给一个变量。对元素 而言，nodeName 始终等于元素的标签名，而 nodeValue 则始终为 null。
+
+### NodeList对象
+
+NodeList 对象独特的地方在于，它其实是一个对 DOM 结 构的查询，因此 DOM 结构的变化会自动地在 NodeList 中反映出来。我们通常说 NodeList 是实时的 活动对象，而不是第一次访问时所获得内容的快照
+
+使用 Array.prototype.  slice()可以把 NodeList 对象转换为数组
+
+```js
+let arrayOfNodes = Array.prototype.slice.call(someNode.childNodes,0); 
+```
+
+```js
+let arrayOfNodes = Array.from(someNode.childNodes);
+```
+
+### parentNode 属性指向父元素
+
+每个节点都有一个 parentNode 属性，指向其 DOM 树中的父元素。childNodes 中的所有节点都 有同一个父元素，因此它们的 parentNode 属性都指向同一个节点
+
+### previousSibling和nextSibling
+
+而使用 previousSibling 和 nextSibling 可以在这个列 表的节点间导航。这个列表中第一个节点的 previousSibling 属性是 null，最后一个节点的 nextSibling 属性也是 null
+
+### firstChild和lastChild
+
+firstChild 和 lastChild 分别指向 childNodes 中的第一个和最后一个子节点
+
+如果只有一个子节点，则 firstChild 和 lastChild 指向同一个节点
+
+则 firstChild 和 lastChild 都是 null
+
+### hasChildNodes() 返回节点是否有一个或多个子节点
+
+hasChildNodes()，这个方法如果返回 true 则说明节点有一个或多个子节点
+
+### ownerDocument 代表整个文档节点的指针
+
+ownerDocument 属性是一个指向代表整个文档的文档节点 的指针
+
+### appendChild 在节点末尾添加节点
+
+appendChild()，用于在 childNodes 列表末尾添加节点。添加新节点会更新相关的关系指针，包括 父节点和之前的最后一个子节点。appendChild()方法返回新添加的节点
+
+如果把文档中已经存在的节点传给 appendChild()，则这个节点会从之前的位置被转移到新位置。 即使 DOM 树通过各种关系指针维系，一个节点也不会在文档中同时出现在两个或更多个地方
+
+如果调用 appendChild()传入父元素的第一个子节点，则这个节点会成为父元素的最后一个子节点
+
+**appendChild() 在插入节点时不会删除任何已有节点。**
+
+### insertBefore 把节点放入到特定位置
+
+insertBefore()方法接收两个参数：要插入的节点和参照节点。调用这个方法后，要插入的节点会变成参照节点的 前一个同胞节点，并被返回。如果参照节点是 null，则 insertBefore()与 appendChild()效果相 同
+
+```js
+// 作为最后一个子节点插入
+returnedNode = someNode.insertBefore(newNode, null); 
+alert(newNode == someNode.lastChild); // true 
+// 作为新的第一个子节点插入
+returnedNode = someNode.insertBefore(newNode, someNode.firstChild); 
+alert(returnedNode == newNode); // true 
+alert(newNode == someNode.firstChild); // true 
+// 插入最后一个子节点前面
+returnedNode = someNode.insertBefore(newNode, someNode.lastChild); 
+alert(newNode == someNode.childNodes[someNode.childNodes.length - 2]); // true
+```
+
+ **insertBefore() 在插入节点时不会删除任何已有节点。**
+
+### replaceChild()替换节点
+
+replaceChild()方法接收两个参数：要插入的节点和要替换的节点。要替换的节点会被返回并从文档 树中完全移除，要插入的节点会取而代之
+
+```js
+// 替换第一个子节点
+let returnedNode = someNode.replaceChild(newNode, someNode.firstChild)
+```
+
+使用 replaceChild()插入一个节点后，所有关系指针都会从被替换的节点复制过来。虽然被替换的节点从技术上说仍然被同一个文档所拥有，但文档中已经没有它的位置
+
+### removeChild()移除节点
+
+这个方法接收一个参数，即要移除 的节点。被移除的节点会被返回
+
+### appendChild insertBefore  replaceChild removechild 注意事项
+
+**上面介绍的 4 个方法都用于操纵某个节点的子元素，也就是说使用它们之前必须先取得父节点（使 用前面介绍的 parentNode 属性）。并非所有节点类型都有子节点，如果在不支持子节点的节点上调用 这些方法，则会导致抛出错误**
+
+### cloneNode() 复制节点
+
+cloneNode()，会返回与调用它的节点一模一样的节 点
+
+cloneNode()方法接收一个布尔值参数，表示是否深复制。在传入 true 参数时，会进行深复制， 即复制节点及其整个子 DOM 树。如果传入 false，则只会复制调用该方法的节点。复制返回的节点属 于文档所有，但尚未指定父节点，所以可称为孤儿节点（orphan）。可以通过 appendChild()、 insertBefore()或 replaceChild()方法把孤儿节点添加到文档中。
+
+```js
+<ul> 
+ <li>item 1</li> 
+ <li>item 2</li> 
+ <li>item 3</li> 
+</ul> 
+如果myList保存着对这个<ul>元素的引用，则下列代码展示了使用cloneNode()方法的两种方式：
+let deepList = myList.cloneNode(true); 
+alert(deepList.childNodes.length); // 3（IE9 之前的版本）或 7（其他浏览器）
+let shallowList = myList.cloneNode(false); 
+alert(shallowList.childNodes.length); // 0
+```
+
+在这个例子中，deepList 保存着 myList 的副本。这意味着 deepList 有 3 个列表项，每个列表 项又各自包含文本。变量 shallowList 则保存着 myList 的浅副本，因此没有子节点。 deepList.childNodes.length 的值会因 IE8 及更低版本和其他浏览器对空格的处理方式而不同。IE9 之前的版本不会为空格创建节点
+
+> cloneNode()方法不会复制添加到 DOM 节点的 JavaScript 属性，比如事件处理程 序。这个方法只复制 HTML 属性，以及可选地复制子节点。除此之外则一概不会复制。 IE 在很长时间内会复制事件处理程序，这是一个 bug，所以推荐在复制前先删除事件处 理程序
+
+### normalize() 处理文档子树中的文本节 点
+
+这个方法唯一的任务就是处理文档子树中的文本节 点。由于解析器实现的差异或 DOM 操作等原因，可能会出现并不包含文本的文本节点，或者文本节点之间互为同胞关系。在节点上调用 normalize()方法会检测这个节点的所有后代，从中搜索上述两种 情形。如果发现空文本节点，则将其删除；如果两个同胞节点是相邻的，则将其合并为一个文本节点
+
+### document.title
+
+通过这个属性可以读写页面的标题，修改后的标题也会反映在浏览器标题 栏上。不过，修改 title 属性并不会改变
+
+### document.URL
+
+其中，URL 包含当前页面的完整 URL（地 址栏中的 URL）
+
+```js
+// 取得完整的 URL 
+let url = document.URL;
+```
+
+### document.domain
+
+domain 包含页面的域名
+
+```js
+// 取得域名
+let domain = document.domain; 
+```
+
+URL 跟域名是相关的。比如，如果 document.URL 是 http://www.wrox.com/WileyCDA/，则 document.domain 就是 www.wrox.com。
+
+只有 domain 属性是可以设置的。出于安全考虑，给 domain 属性设置的值是有限制的。如果 URL包含子域名如 p2p.wrox.com，则可以将 domain 设置为"wrox.com"（URL包含“www” 时也一样，比如 www.wrox.com）。不能给这个属性设置 URL 中不包含的值
+
+```js
+// 页面来自 p2p.wrox.com 
+document.domain = "wrox.com"; // 成功
+document.domain = "nczonline.net"; // 出错
+```
+
+当页面中包含来自某个不同子域的窗格（）或内嵌窗格（当页面中包含来自某个不同子域的窗格（iframe）或内嵌窗格（iframe）时，设置
+document.domain 是有用的。因为跨源通信存在安全隐患，所以不同子域的页面间无法通过 JavaScript
+通信。此时，在每个页面上把 document.domain 设置为相同的值，这些页面就可以访问对方的 JavaScript
+对象了。比如，一个加载自 www.wrox.com 的页面中包含一个内嵌窗格，其中的页面加载自
+p2p.wrox.com。这两个页面的 document.domain 包含不同的字符串，内部和外部页面相互之间不能
+访问对方的 JavaScript 对象。如果每个页面都把 document.domain 设置为 wrox.com，那这两个页面
+之间就可以通信了
+
+浏览器对 domain 属性还有一个限制，即这个属性一旦放松就不能再收紧。比如，把 document.domain 设置为"wrox.com"之后，就不能再将其设置回"p2p.wrox.com"，后者会导致错 误
+
+```js
+// 页面来自 p2p.wrox.com 
+document.domain = "wrox.com"; // 放松，成功
+document.domain = "p2p.wrox.com"; // 收紧，错误
+```
+
+### document.referrer
+
+referrer 包含链接到当前页面的那个页面的 URL
+
+如 果当前页面没有来源，则 referrer 属性包含空字符串
+
+### document.getElementById
+
+getElementById()方法接收一个参数，即要获取元素的 ID，如果找到了则返回这个元素，如果 没找到则返回 null。参数 ID 必须跟元素在页面中的 id 属性值完全匹配，包括大小写
+
+如果页面中存在多个具有相同 ID 的元素，则 getElementById()返回在文档中出现的第一个元素
+
+### document.getElementsByTagName
+
+这个方法接收一个参数，即要 获取元素的标签名，返回包含零个或多个元素的 NodeList
+
+在 HTML 文档中，这个方法返回一个 HTMLCollection 对象。考虑到二者都是“实时”列表
+
+HTMLCollection 对象还有一个额外的方法 namedItem()，可通过标签的 name 属性取得某一项 的引用
+
+```js
+<img src="myimage.gif" name="myImage"> 
+那么也可以像这样从 images 中取得对这个<img>元素的引用：
+let myImage = images.namedItem("myImage"); 
+```
+
+```js
+let myImage = images["myImage"]; 
+对 HTMLCollection 对象而言，中括号既可以接收数值索引，也可以接收字符串索引。而在后台，
+数值索引会调用 item()，字符串索引会调用 namedItem()
+```
+
+要取得文档中的所有元素，可以给 getElementsByTagName()传入*
+
+> 对于 document.getElementsByTagName()方法，虽然规范要求区分标签的大小 写，但为了最大限度兼容原有 HTML 页面，实际上是不区分大小写的。如果是在 XML 页 面（如 XHTML）中使用，那么 document.getElementsByTagName()就是区分大小 写的
+
+### document.getElementsByName
+
+这个 方法会返回具有给定 name 属性的所有元素
+
+### document的特殊集合
+
+1. document.anchors 包含文档中所有带 name 属性的元素
+
+2. document.applets 包含文档中所有元素（因为元素已经不建议使用，所 以这个集合已经废弃）
+3. document.forms 包含文档中所有元素（与 document.getElementsByTagName ("form") 返回的结果相同）
+4. document.images 包含文档中所有<img>元素（与 document.getElementsByTagName ("img") 返回的结果相同）
+5. document.links 包含文档中所有带 href 属性的元素
+
+这些特殊集合始终存在于 HTMLDocument 对象上，而且与所有 HTMLCollection 对象一样，其内 容也会实时更新以符合当前文档的内容
+
+#### document文档写入
+
+**write()**、 **writeln()**、**open()**和 **close()**。其中，write()和 writeln()方法都接收一个字符串参数，可以将 这个字符串写入网页中。write()简单地写入文本，而 writeln()还会在字符串末尾追加一个换行符 （\n）。这两个方法可以用来在页面加载期间向页面中动态添加内容
+
+**write()和 writeln()方法经常用于动态包含外部资源，如 JavaScript 文件。在包含 JavaScript 文 件时，记住不能像下面的例子中这样直接包含字符串""，因为这个字符串会被解释为脚本块 的结尾，导致后面的代码不能执行**
+
+```js
+<script type="text/javascript"> 
+ document.write("<script type=\"text/javascript\" src=\"file.js\">" + 
+ "</script>"); 
+ </script>
+```
+
+虽然这样写看起来没错，但输出之后的"</script>"会匹配最外层的</script>标签导致页面中 显示出");。为避免出现这个问题，需要对前面的例子稍加修改
+
+```js
+<script type="text/javascript"> 
+ document.write("<script type=\"text/javascript\" src=\"file.js\">" + 
+ "<\/script>"); 
+ </script> 
+```
+
+前面的例子展示了在页面渲染期间通过 document.write()向文档中输出内容。如果是在页面加 载完之后再调用 document.write()，则输出的内容会重写整个页面
+
+```js
+ window.onload = function(){ 
+ document.write("Hello world!"); 
+ }; 
+```
+
+这个例子使用了 window.onload 事件处理程序，将调用 document.write()的函数推迟到页面 加载完毕后执行。执行之后，字符串"Hello world!"会重写整个页面内容
+
+open()和 close()方法分别用于打开和关闭网页输出流。在调用 write()和 writeln()时，这两 个方法都不是必需的
+
+> 严格的 XHTML 文档不支持文档写入。对于内容类型为 application/xml+xhtml 的页面，这些方法不起作用
+
+### 确定元素尺寸
+
+浏览器在每个元素上都暴露了 getBoundingClientRect()方法，返回一个 DOMRect 对象，包含 6 个属性：left、top、right、bottom、height 和 width。
+
+<img src="http://rfzvqtsnl.hn-bkt.clouddn.com/JavaScriptDomApi%E6%95%B4%E7%90%86/image-20220112211448492.png" style="zoom:100%;" />

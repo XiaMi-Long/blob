@@ -1,0 +1,400 @@
+[toc]
+## 原型链
+
+​		JavaScript的对象通过其身上原型这一点特征，来实现与传统的面向对象编程语言截然不同的继承机制
+
+### prototype）原型是什么？
+
+  * 在JS中大多数情况下创建的对象，都拥有一个原型对象，创建的对象，从其原型为模板、来继承方法和属性。而原型对象本身都有可能拥有原型，并从中获取方法和属性，以此类推，这种关系便被称为**原型链**，**原型链**的关系解释了为何一个对象身上会拥有本不属于他的属性和方法。
+  * 所有拥有原型的对象的最顶层便是**Object对象的prototype**
+
+### prototype长什么样子
+
+​		先复制如下代码放入到浏览器的控制台回车查看结果：
+
+```js
+function test(){}
+console.log(test.prototype);
+```
+
+​		放入到控制台打印的结果为：
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/60e6335425d44fce8aa13a993adc495c.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5aSP5bylKOKXj-KAlOKXjyk=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
+
+
+这里我把其中的关系做了个图来方便理解，忽略其他属性，专注于constructor和\_\_proto\_\_属性
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/d6010a45bce64135a126ab10c6df41c1.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5aSP5bylKOKXj-KAlOKXjyk=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
+
+
+* **\_\_proto\_\_== prototype 这两个是一样的，你调用test.prototype和调用test._\_\_proto\_\__是一样的**
+
+1. 通过上面我们发现当调用test.prototype时，会出现两个属性：**constructor**、**\_\_proto\_\_**
+   1. constructor: **该属性指向了用于构造此实例对象的构造函数，在上例中就为function test(){}**
+
+2. 我们会发现test.prototype.\_\_proto\_\_属性的引用指向Object的原型对象
+3. Object的原型对象里面同样包含了：constructor、\_\_proto\_\_属性，只不过Object的\_\_proto\_\_属性的值为NULL，这跟我们前面说的：所有拥有原型的对象的最顶层便是**Object对象的prototype**，往后就没有原型对象了，所以才会出现为NULL的情况
+
+#### 添加属性
+
+现在让我们在test的原型上添加一个name属性	
+
+```javascript
+test.prototype.name = 'zhang';
+function test(){}
+console.log(test.prototype);
+```
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/db43392152784a4d86d07982c2f0227d.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5aSP5bylKOKXj-KAlOKXjyk=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
+
+
+我们可以发现在test的原型上多一个名为name的属性
+
+我们继续来添加属性，这次我们要实例化test的对象，需要用到**new**关键字
+
+```javascript
+var obj = new test();
+```
+
+然后我们试着在obj对象里面添加一些属性，然后再看整体的原型结构是什么样子的
+
+```javascript
+test.prototype.name = 'zhang';
+function test(){}
+var obj = new test();
+obj.age = 13;
+console.log(test.prototype);
+```
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/83efdb1286fb4caebd03a7c371d5d141.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5aSP5bylKOKXj-KAlOKXjyk=,size_17,color_FFFFFF,t_70,g_se,x_16#pic_center)
+
+
+这里我把其中的关系做了个图来方便理解，忽略其他属性
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/cc17d0c0c4db44d3a54e5c269c334ca9.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5aSP5bylKOKXj-KAlOKXjyk=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
+
+
+目前的结构为：obj对象里面有一个age属性，而test.prototype原型上一个name属性
+
+### 访问原型属性 初探原理
+
+正常情况下，当我们访问一个对象里不存在的属性时，会返回undefined
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/be6fa07763c5490f8b44622642dfa692.png#pic_center)
+
+
+
+下面这一段代码让我们来看看结果是什么：
+
+```javascript
+test.prototype.name = 'zhang';
+function test(){
+    this.age = 12;
+}
+var obj = new test();
+console.log(obj.name);
+```
+![在这里插入图片描述](https://img-blog.csdnimg.cn/489c73e3dca540c88606aa96b0a7aea7.png#pic_center)
+
+通过控制台打印我们发现结果为“zhang”
+
+对于这个结果我们应该有疑惑比如：
+
+1. 为什么在test对象里面并没有定义名为name的属性，可是实例化之后我们却可以访问，并获取其结果，为什么不是undefined
+
+我们可能想到了于上文的原型有关，让我们再来看段代码：
+
+```javascript
+console.log(obj.__proto__);
+console.log(test.prototype);
+```
+
+让我们来看看打印结果
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/4c46bfc6663e4207aacbe998f870563b.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5aSP5bylKOKXj-KAlOKXjyk=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
+
+
+可以发现**obj.\_\_proto\_\_**和**test.prototype**的打印结果是一致的
+
+到这里我们应该也有些眉头了
+
+#### 原型链的查找
+
+1. 当我们访问**obj.name**时，浏览器首先查找test对象本身是否有这个**name**属性，如果有就会直接拿来进行使用，例：
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/d7f721aeb0e1487da1382eaaf87ba7f1.png#pic_center)
+
+2. 如果obj没有这个**name**属性，那么浏览器就会从obj的\_\_proto\_\_中查找这个属性，在这里的obj.\_\_proto\_\_等同于test.prototype
+
+3. 如果obj.\_\_proto\_\_上有这个name属性，那么就会获取他，就如上例打印所示，在test.prototype上面有一个name属性值，那么我们打印obj.name 就会取到test.prototype上面的属性值
+4. 如果test.prototype对象上也没有name属性值，那么我们就会继续往上一个__proto__上去找具有name属性值的prototype，比如obj.__proto__.__proto__，在本例中，第三层就已经是Object对象了，在实际的例子中可以会有多层
+
+5. 如果Object.prototype上面也没有name属性，那么最终就会返回undefined，如下图所示：
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/712dfcc63f9d4a868b88ec61297d8556.png#pic_center)
+
+
+上面的关系用一张图总结
+![在这里插入图片描述](https://img-blog.csdnimg.cn/c9e1c4b408794c36aca21560419d06a5.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5aSP5bylKOKXj-KAlOKXjyk=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
+
+
+#### 理解原型对象
+
+有如下代码，我们来看看
+
+```javascript
+function test(){
+    this.name = 12;
+}
+var obj = new test();
+console.log(obj.name);
+console.log(obj.toString());
+
+```
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/3508d7f83dec49299032abb5cf091a8f.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5aSP5bylKOKXj-KAlOKXjyk=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
+
+
+这个toString()方法是哪里来的纳？结合我们上文理解其实不难想到，应该是原型链中某一个环节里面的方法
+
+这这个例子中有如下过程：
+
+* 浏览器首先检查obj对象里面是有可以使用的toString()方法
+* 如果没有可以使用的toString()方法，浏览器会查看obj对象的原型对象（即test构造函数的prototype属性），是否有可用的toString()方法
+* 如果也没有，浏览器会继续往上寻找，在本例中就为obj.__proto__.__proto__（即Object的prototype属性）
+* 我们在Object的prototype属性里面找到了我们要使用的toString()方法，于是我们就会看到这个方法被调用的结果
+
+> *注意：原型链中的方法和属性**没有**被复制到其他对象——它们被访问需要通过前面所说的“原型链”的方式。*
+
+> *没有官方的方法用于直接访问一个对象的原型对象——原型链中的“连接”被定义在一个内部属性中，在 JavaScript 语言标准中用 `[[prototype]]` 表示。然而，大多数现代浏览器还是提供了一个名为 `__proto__` （前后各有2个下划线）的属性，其包含了对象的原型。你可以尝试输入 `实例化对象.__proto__` 和 `实例化对象.__proto__.__proto__`，看看代码中的原型链是什么样的！ ---以上引自MDN*
+
+#### 如何定义一个可以被继承的属性或者方法？
+
+我们来看一下Object对象
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/9ae50f9afd3d44329df33b4bfbf3f56a.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5aSP5bylKOKXj-KAlOKXjyk=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
+
+
+我们可以发现他的prototype里面就有我们之前案例的toString方法，但是在他的prototype外面有一些类似于create等方法
+
+我们来段代码：
+
+```javascript
+function test(){
+}
+var obj = new test();
+console.log(obj.toString());
+console.log(obj.create());
+
+```
+
+结果如下：
+![在这里插入图片描述](https://img-blog.csdnimg.cn/78ddb12a8da448c1a211709e57af9083.png#pic_center)
+
+
+系统提示我们obj.create并不是一个函数，但是obj.toString是可以输出结果的，他们之间在这里的区别只有toString是在Object的原型里面定义的，而create方法是Object对象内部定义的方法，只有他自己是可以访问的
+
+那么讲到这里，我们就可以定义的原型的方法和属性被继承
+
+```javascript
+function test(){
+}
+test.prototype.name = '我要被继承了';
+test.prototype.toInt = function(){
+    console.log('我是toInt');
+}
+var obj = new test();
+console.log(obj.name);
+console.log(obj.toInt());
+```
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/34e1ed9f04c94995ac43368e9ed28563.png#pic_center)
+
+
+我们成功的利用test上定义的原型方法和属性，使obj对象成功的获取到
+
+#### 原型查找、重写的就近原则
+
+如果我们的代码是这样的，会出现什么结果纳？
+
+```javascript
+function test(){
+}
+Object.prototype.name = '我是Object的name属性'
+test.prototype.name = '我是test的name属性';
+test.prototype.toSring = function(){
+    console.log('我是test原型上面的toString方法');
+}
+var obj = new test();
+console.log(obj.name);
+console.log(obj.toSring());
+
+```
+
+1. 我们先是在Object.prototype的原型对象上定义了名为name的属性，并赋值
+2. 我们又在test.prototype的原型对象上也定义了名为name的属性，并赋值
+3. 我们在已知Object的原型对象上有一个名为toString的方法，但是我们又缺心眼的在test.prototype的原型的对象上也定义了一个toString方法
+4. 那么当我们调用obj.name、obj.toString() 结果是怎么样的纳
+![在这里插入图片描述](https://img-blog.csdnimg.cn/5b2866d39abe4526998546af86154c4d.png#pic_center)
+
+
+结果是我们的name和toString全部执行的test原型对象里面的定义的方法和属性，这里就引出了原型链查找时的就近原则
+
+Object是在test原型链的上层，所以当我们调用name时会先使用test原型对象的属性，如果没有再往上进行查找
+
+同时这里也出现了我们定义的方法和Object原型对象里面的定义的方法，名字相同的情况下，这种情况下，我们在**原型链底层定义的与顶层同名的函数时，底层的方法会覆盖顶层同名的函数（也称为重写），所以当调用同名函数时，按照原型链的就近规则，我们会取离得最近的原型对象里面的同名函数（这里的顶层可以理解为树的根节点，也就是Object）**
+
+在这里我们如果直接调用Object.toString()方法
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/19df793fe3684509b9f093a3f54671c5.png#pic_center)
+
+
+是不出现test定义的toString，因为我们是直接越过了底层原型链进行的顶层原型链的调用
+
+#### 构造函数里面的this指向问题
+
+现在让我们回归到test构造函数里面的来看看this指向的问题
+
+函数和构造函数他们之间其实没有什么区别，但是一个可以实例化一个不可以是为什么？
+
+其实主要是看new这个关键字，让我们来看如下的代码：
+
+```javascript
+function test() {
+    console.log(this);
+    this.name = 'name';
+}
+test.prototype.age = 123;
+var obj = new test();
+```
+
+让我们来看看结果：
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/6413ff0d76744cec9d0972553f82f221.png#pic_center)
+
+
+这里的打印的this是一个对象，对象里面的prototype属性有我们在test原型上定义的age属性和constructor，这里我画个图来方便大家理解
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/756354844d704f6385e983e5c479b42a.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5aSP5bylKOKXj-KAlOKXjyk=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
+
+
+1. this首先是一个对象，当你在test()构造函数内部用this.属性定义属性会放在图中蓝色区域，对象结果的name的同一层
+2. 而__proto__对象里面放的就是test原型链里面定义的属性比如：age
+3. 这里在原型链寻找中，当我们没有在test里面找到age属性时，就会隐式的调用__proto__属性里面的age属性
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/dd2e2d60031245eca576e9fa10752259.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5aSP5bylKOKXj-KAlOKXjyk=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
+
+
+4. 我们打印obj会发现其结构是与this相同的，其实在我们new 对象时，就已经把这个this的值，传给了new 对象时要赋值的变量
+
+#### this是哪里来的
+
+这个this是哪里来的纳？
+
+其实当我们new 对象时，在构造函数内部会有隐式的几部操作
+
+```javascript
+function test() {
+    // var this = {
+    //     __proto__: test.prototype
+    // }
+    console.log(this);
+    this.name = 'name';
+    // return this;
+}
+test.prototype.age = 123;
+var obj = new test();
+```
+
+当我们看到这几部操作时，我想就都明白了为什么我们在构造函数内部定义属性需要this来进行赋值
+
+### 一些关于原型的常用操作
+
+#### Object.create
+
+* Object.create(参数) 可以指定的参数（原型对象）创建一个新的对象
+
+示例如下：
+
+```javascript
+function test() {
+
+}
+test.prototype.age = 123;
+var obj = new test();
+var obj2 = Object.create(test);
+console.log(obj);
+console.log(obj2);
+```
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/252cc83696dd49f39991a772a58cb6f6.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5aSP5bylKOKXj-KAlOKXjyk=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
+
+
+我们可以发现Obj2的__proto__指向的原型对象为obj，而obj的原型对象为test，create相当于对指定的原型对象下面再添加一层链的关系
+
+> *这里Object.create(null)的参数是可以为null的*
+>
+> ![在这里插入图片描述](https://img-blog.csdnimg.cn/4a651af3c4b74ba59cc82d89d727a9f8.png#pic_center)
+
+>
+> 我们可以发现obj2是没有原型的，所以这也是文章开始时说的大部分对象都是有原型的
+
+#### constructor 属性
+
+* 每个实例对象都从原型中继承了一个constructor属性，该属性指向了用于构造此实例对象的构造函数。
+
+案例如下：
+
+```javascript
+function test() {
+
+}
+test.prototype.age = 123;
+var obj = new test();
+console.log(obj.constructor);
+```
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/65c8a2ffd0ef443a980f89a6774bee28.png#pic_center)
+
+
+这里我们看到obj.constructor返回的是test构造函数
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/74412fe959b84515b7d1b6b6c14e1742.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5aSP5bylKOKXj-KAlOKXjyk=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
+
+
+1. 第一个输出是因为我们创建了对象，打印出了param参数，但是因为没有参数传递，所以为undefined
+2. 第二次是我们的打印的constructor
+3. **这里返回的constructor因为是一个对象，所以我们可以在后面加上（）来实例化这个对象**，这里我们实例化了他，并传递了参数12132，所以他第三次打印出了参数，因为已经成功到创建了对象
+
+#### 原型的增删改查
+
+* 查
+  * 这里我们可以在原型底层实例化对象中，直接.属性或者方法，让浏览器隐式的帮我们查找，也可以直接显示的查找他们的__proto__属性
+
+* 改
+
+  * ```
+    构造函数.prototype.属性/方法 = 值	
+    ```
+
+* 增
+
+  * ```
+    构造函数.prototype.属性/方法 = 值	
+    如果嫌一个个赋值太麻烦，那么我们可以直接赋值一个对象
+    构造函数.prototype = {
+    	key:vlaue,
+    	name:'1123'
+    }
+    ```
+
+    
+
+* 删
+
+  * ```javascript
+    delete 构造函数.prototype.属性/方法
+    ```
+
+    
+

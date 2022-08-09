@@ -1,0 +1,404 @@
+### JavaScript 常用方法
+
+#### 计算文件大小封装方法
+
+```js
+// 计算文件大小 自行补充GB,TB
+function computeFileSize(size) {
+  const _HEX = 10;
+  const _MB = 1024;
+  let result = parseInt(size / _MB, _HEX);
+  return result < _MB ? result + ".KB" : parseInt(result / _MB, _HEX) + ".MB";
+}
+```
+
+#### 通用 requestAnimationFrame 封装方法
+
+```js
+/**
+ * @name: wwy
+ * @msg: 在一定的毫秒内执行动画
+ * @param callback 要执行的函数
+ * @param duration 到多少秒结束,开始执行回调
+ * @param startTime 动画开始时间
+ * @param timeStamp requestAnimationFrame函数默认自己会传的一个参数，为第几毫秒数执行函数
+ * @return {*}
+ */
+function requestAnimationFrameTool(
+  callback,
+  duration,
+  startTime = 0,
+  timeStamp
+) {
+  if (startTime === 0) startTime = timeStamp;
+
+  const timeInterval = timeStamp - startTime;
+
+  if (timeInterval < duration) {
+    window.requestAnimationFrame(
+      requestAnimationFrameTool.bind(this, callback, duration, startTime)
+    );
+  } else {
+    callback();
+  }
+}
+
+requestAnimationFrame(
+  requestAnimationFrameTool.bind(
+    this,
+    () => {
+      console.log("进行操作");
+    },
+    1000,
+    0
+  )
+);
+```
+
+#### 数字处理函数，把数字转换为每隔三位带,的
+
+> 支持 IE9 以上
+> 如果要隔 n 位数的话，只需要更改下 if 中的 index+1 和%n 的判断即可
+
+```ts
+/**
+ * 数字处理函数，把数字转换为每隔三位带,的
+ * @param {*} param 要被处理的数字
+ */
+function stringSplitMethod(param) {
+  const emptyArray = [];
+  param
+    .toString()
+    .split("")
+    .reverse()
+    .forEach((value, index, array) => {
+      if ((index + 1) % 3 === 0) return emptyArray.push(value, ",");
+      emptyArray.push(value);
+    });
+  return emptyArray.reverse().join("");
+}
+```
+
+#### 下载 echarts 图表的图片 支持 IE
+
+```js
+/**
+ * 下载echarts图表的图片
+ * @param {*} title 图表的标题，下载成图片的文件名
+ * @param {*} echart 对象实体
+ */
+function downloadEchartsToImage({
+  title = "图表数据",
+  echart = null,
+  isShow = false,
+}) {
+  if (echart === null) return;
+  if (isShow) return;
+
+  const baseUrl = echart.getDataURL({
+    type: "png",
+    backgroundColor: "white",
+  });
+
+  var userAgent = navigator.userAgent;
+  var isIE = window.ActiveXObject || "ActiveXObject" in window;
+  var isEdge = userAgent.indexOf("Edge") > -1;
+
+  if (isIE || isEdge) {
+    SaveAs5(baseUrl, title);
+    return;
+  }
+
+  const img = document.createElement("a");
+  img.href = baseUrl;
+  img.download = title;
+  img.click();
+  img.style.opacity = 0;
+
+  // IE兼容性问题
+  URL.revokeObjectURL(img);
+  document.body.appendChild(img);
+  if (img.remove) {
+    img.remove();
+  }
+}
+
+/**
+ * @name: SaveAs5
+ * @msg: 使IE可以下载图片
+ * @param {*} url base64url
+ * @param {*} fileName 文件名 函数内部添加文件固定后缀
+ * @return {*}
+ */
+function SaveAs5(url, fileName) {
+  var bstr = atob(url.split(",")[1]);
+  var n = bstr.length;
+  var u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  var blob = new Blob([u8arr]);
+  window.navigator.msSaveOrOpenBlob(blob, fileName + ".png");
+}
+```
+
+#### 格式化时间为时间字符串，不带秒
+
+```js
+/**
+ * @name: wwy
+ * @msg:
+ * @param {*} str 时间数字或者时间字符串
+ * @return {*} split 用什么分割他们之间
+ */
+const dateFormat = (str, split) => {
+  const date = new Date(str);
+  return `${date.getFullYear()}${split}${
+    date.getMonth() + 1
+  }${split}${date.getDate()}`;
+};
+```
+
+不同版本的
+
+```js
+const dateFormat = (date, split) => {
+  return `${date.getFullYear()}${split[0]}${date.getMonth() + 1}${
+    split[1]
+  }${date.getDate()}${split[2]}`;
+};
+```
+
+#### 获取 url 参数
+
+```js
+const getQueryString = (name) => {
+  let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+  let r = decodeURI(window.location.search.substr(1)).match(reg);
+  if (r != null) return unescape(r[2]);
+  return "";
+};
+```
+
+#### onload 队列
+
+```js
+function onloadQueue(method) {
+  const cache = window.onload;
+  if (cache === null) {
+    window.onload = method;
+    return undefined;
+  }
+  window.onload = function () {
+    cache();
+    method();
+  };
+}
+
+window.onload = function () {
+  console.log(1);
+};
+
+onloadQueue(function () {
+  console.log(2);
+});
+onloadQueue(function () {
+  console.log(3);
+});
+onloadQueue(function () {
+  console.log(4);
+});
+onloadQueue(function () {
+  console.log(5);
+});
+```
+
+会在 onload 事件里面顺序执行
+
+#### 深拷贝简单封装
+
+```js
+export const deepCopy = (obj) => {
+  return JSON.parse(JSON.stringify(obj));
+};
+```
+
+#### 返回搜索匹配中的字符串,并在前后加上相应的标签
+
+```js
+export const connectStr = (target, str, tag) => {
+  if (target.includes(str)) {
+    const start = target.indexOf(str);
+    const end = target.indexOf(str) + str.length;
+    const tag_end = tag.slice(0, 1) + "/" + tag.slice(1);
+    return target.slice(0, start) + tag + str + tag_end + target.slice(end);
+  }
+};
+```
+
+> 如果目标字符串中,没有匹配的字符串 会直接跳出
+> tag 为标签不带/
+
+#### 返回匹配字符串在目标字符串中的起止位置下标
+
+```js
+export const strIndexOfs = (target, str) => {
+  return [target.indexOf(str), target.indexOf(str) + str.length];
+};
+```
+
+#### 实现非阻塞的暂停运行
+
+```js
+async function sleep(delay){
+  return new Promise(function(resolve)=> setTimeout(resolve,delay))
+}
+
+function a(){
+  console.log(1);
+  await sleep(1500);
+  console.log(2);
+}
+```
+
+#### 获取浏览器页面视口大小
+
+```js
+let pageWidth = window.innerWidth,
+  pageHeight = window.innerHeight;
+if (typeof pageWidth != "number") {
+  /* 检查浏览器是否在怪异模式还是标准模式 */
+  if (document.compatMode == "CSS1Compat") {
+    pageWidth = document.documentElement.clientWidth;
+    pageHeight = document.documentElement.clientHeight;
+  } else {
+    pageWidth = document.body.clientWidth;
+    pageHeight = document.body.clientHeight;
+  }
+}
+```
+
+#### 循环任务
+
+建议自行实现类似的效果,
+
+```js
+let incrementNumber = function () {
+  num++;
+  // 如果还没有达到最大值，再设置一个超时任务
+  if (num < max) {
+    setTimeout(incrementNumber, 500);
+  } else {
+    alert("Done");
+  }
+};
+setTimeout(incrementNumber, 500);
+```
+
+这个模式是设置循环任务的推荐做法。setIntervale()在实践中很少会在
+生产环境下使用，因为一个任务结束和下一个任务开始之间的时间间隔是无法保证的，有些循环定时任
+务可能会因此而被跳过。而像前面这个例子中一样使用 setTimeout()则能确保不会出现这种情况。一
+般来说，最好不要使用 setInterval()。
+
+#### 检查浏览器中存在的插件
+
+```js
+// 插件检测，IE10 及更低版本无效
+let hasPlugin = function (name) {
+  name = name.toLowerCase();
+  for (let plugin of window.navigator.plugins) {
+    if (plugin.name.toLowerCase().indexOf(name) > -1) {
+      return true;
+    }
+  }
+  return false;
+};
+// 检测 Flash
+alert(hasPlugin("Flash"));
+// 检测 QuickTime
+alert(hasPlugin("QuickTime"));
+```
+
+IE11 的 window.navigator 对象开始支持 plugins 和 mimeTypes 属性
+
+#### 动态加载 JavaScript 脚本
+
+```js
+function loadScript(url) {
+  let script = document.createElement("script");
+  script.src = url;
+  document.body.appendChild(script);
+}
+
+loadScript("client.js");
+```
+
+#### Event 对象里面的一些常用兼容性操作 兼容 IE
+
+```js
+var EventUtil = {
+  // 在事件里面获取统一的Event对象
+  getEvent: function (event) {
+    return event ? event : window.event;
+  },
+  // 获取统一的target
+  getTarget: function (event) {
+    return event.target || event.srcElement;
+  },
+  // 统一的阻止事件默认行为,比如a链接的跳转页面
+  preventDefault: function (event) {
+    if (event.preventDefault) {
+      event.preventDefault();
+    } else {
+      event.returnValue = false;
+    }
+  },
+  // 统一的阻止元素后续的事件捕获和冒泡阶段
+  stopPropagation: function (event) {
+    if (event.stopPropagation) {
+      event.stopPropagation();
+    } else {
+      event.cancelBubble = true;
+    }
+  },
+};
+```
+
+#### 解析 url 中的字符串转换为对象
+
+```js
+/**
+ * 解析浏览器url中的hash字符串,转换为对象
+ * @returns hash对象
+ */
+export function getHashStringArgs() {
+  // 取得没有开头#的hash
+  let qs = location.hash.length > 0 ? location.hash.substring(1) : "",
+    // 保存数据的对象
+    args = {};
+  // 把每个参数添加到 args 对象
+  for (let item of qs.split("#").map((kv) => kv.split("="))) {
+    let name = decodeURIComponent(item[0]),
+      value = decodeURIComponent(item[1]);
+    if (name.length) {
+      args[name] = value;
+    }
+  }
+  return args;
+}
+```
+
+#### 把秒转换为分
+
+```js
+function secondConvertMinute(target) {
+  const num = 60;
+  const minute = parseInt(target / num, 10);
+  let second = String(target - num * minute);
+  console.log(second);
+  if (second.length === 1) {
+    second = "0" + second;
+  }
+  return minute + "." + second;
+}
+```

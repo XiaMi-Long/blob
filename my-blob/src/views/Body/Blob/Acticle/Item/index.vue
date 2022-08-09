@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-12 10:58:19
  * @LastEditors: wwy
- * @LastEditTime: 2022-08-09 21:39:04
+ * @LastEditTime: 2022-08-10 00:44:38
 -->
 <template>
   <div class="blob-activle-text-box">
@@ -195,6 +195,8 @@ export default {
   }
 
   .body-text {
+    min-height: 72px;
+
     margin: 20px 0;
 
     color: #90a4ae;
