@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-25 22:04:07
+ * @LastEditTime: 2022-08-08 17:55:27
  */
 const { defineConfig } = require("@vue/cli-service");
 const CopyPlugin = require("copy-webpack-plugin");
@@ -12,7 +12,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 const isProduction = process.env.NODE_ENV === "production";
 
 module.exports = defineConfig({
-  transpileDependencies: true,
+  transpileDependencies: false,
 
   productionSourceMap: !isProduction,
 
@@ -46,9 +46,12 @@ module.exports = defineConfig({
           },
           { from: "src/assets/images/user-images", to: "img/user-images" },
           { from: "src/assets/images/system-images", to: "img/system-images" },
+          { from: "public/config.js", to: "" },
+          { from: "public/favicon.ico", to: "" },
         ],
       },
     ]);
+
     // 将文件作为字符串导入, 使用webpack自带的"资源模块"
     config.module.rule("txt").test(/\.txt/).use("asset/source");
   },

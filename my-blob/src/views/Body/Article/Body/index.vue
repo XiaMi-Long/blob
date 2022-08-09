@@ -4,7 +4,7 @@
     * @Author: wwy
     * @Date: 2022-07-13 22:14:26
  * @LastEditors: wwy
- * @LastEditTime: 2022-08-02 22:52:45
+ * @LastEditTime: 2022-08-08 16:19:16
     -->
 <!--
     * @Descripttion: 
@@ -172,7 +172,6 @@ export default {
         .then((res) =>
           res.text().then((res) => {
             demoArray.value = marked.parse(res);
-            console.log(demoArray);
             nextTick(() => {
               // 判断是否生成目录
               if (isDocLabel.value) {
@@ -299,6 +298,16 @@ export default {
   &:hover .pre-button-group {
     opacity: 1;
   }
+}
+
+.code-box blockquote {
+  border-left: 10px solid #1de9b6;
+
+  padding: 20px;
+
+  background-color: #f4f4f4;
+
+  color: black;
 }
 
 .pre-button-group {

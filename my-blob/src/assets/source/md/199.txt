@@ -61,7 +61,7 @@ docker pull guacamole/guacamole
 docker pull mysql
 ```
 
-<img src="E:\typora 图片文件Copy\1.png" alt="1" style="zoom: 150%;" />
+<img src="http://rfzvqtsnl.hn-bkt.clouddn.com/Guacamole/1.png" alt="1" style="zoom: 150%;" />
 
 通过`docker images`命令可以看到目前已经有了3个镜像
 
@@ -84,7 +84,7 @@ docker run -itd --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql
 
 通过 **docker ps** 命令查看`mysql`和`guacd`是否安装成功
 
-<img src="E:\typora 图片文件Copy\2.png" style="zoom:150%;" />
+<img src="http://rfzvqtsnl.hn-bkt.clouddn.com/Guacamole/2.png" style="zoom:150%;" />
 
 由于`Guacamole`需要使用数据库来进行身份验证,所以我们还需要对mysql数据写入一个供`guacamole`访问的用户和数据库
 
@@ -174,7 +174,7 @@ docker run --name guacamole --restart=always  --link guacd:guacd --link mysql:my
 
 如果都启动成功了，那么就可以在宿主机上打开浏览器输入**http://localhost:9090/guacamole**，来进入后台管理页面，默认账号密码都是**guacadmin**
 
-<img src="E:\typora 图片文件Copy\3.png" style="zoom: 50%;" />
+<img src="http://rfzvqtsnl.hn-bkt.clouddn.com/Guacamole/3.png" style="zoom: 50%;" />
 
 ### 常见打不开后台报错
 
@@ -210,11 +210,11 @@ docker logs 容器id
 
 云服务器配置：win10服务器版本 非window版本可以试试SSH连接
 
-<img src="E:\typora 图片文件Copy\4.png" style="zoom:80%;" />
+<img src="http://rfzvqtsnl.hn-bkt.clouddn.com/Guacamole/4.png" style="zoom:80%;" />
 
 点击设置
 
-<img src="E:\typora 图片文件Copy\5.png" style="zoom:80%;" />
+<img src="http://rfzvqtsnl.hn-bkt.clouddn.com/Guacamole/5.png" style="zoom:80%;" />
 
 创建一个RDP连接
 
@@ -239,7 +239,7 @@ docker logs 容器id
 
 直接到最下面保存即可
 
-<img src="E:\typora 图片文件Copy\6.png" style="zoom:80%;" />
+<img src="http://rfzvqtsnl.hn-bkt.clouddn.com/Guacamole/6.png" style="zoom:80%;" />
 
 来到首页，找到我们刚刚新建的连接，双击即可，等待连接成功
 
@@ -358,7 +358,7 @@ docker logs 容器id
 
 我们打开安装 UltraVNC Server 软件，我们底部任务栏会出现他的图标，在他的图标上右边打开Admin properties
 
-![](E:\typora 图片文件Copy\7.png)
+<img src="http://rfzvqtsnl.hn-bkt.clouddn.com/Guacamole/7.png" style="zoom:80%;" />
 
 1. VNC Password：VNC连接时的密码
 2. View-Only Password：连接后只允许看的密码
@@ -398,7 +398,8 @@ https://guacamole.apache.org/api-documentation/
 
 ###Servlet项目集成
 
-<img src="E:\typora 图片文件Copy\8.png" style="zoom:80%;" />
+
+<img src="http://rfzvqtsnl.hn-bkt.clouddn.com/Guacamole/8.png" style="zoom:80%;" />
 
 1. 先新建一个Servlet项目
 

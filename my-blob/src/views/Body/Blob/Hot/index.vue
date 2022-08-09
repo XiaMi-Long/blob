@@ -4,24 +4,26 @@
  * @Author: wwy
  * @Date: 2022-07-12 16:54:07
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-28 15:31:13
+ * @LastEditTime: 2022-08-09 21:41:41
 -->
 <template>
   <div class="blob-archives-box">
     <div class="content">
       <div class="title">Hot</div>
       <div class="body">
-        <li
-          class="body-item"
-          v-for="(item, index) of hots"
-          :key="index"
-          @click="handleBlobTitleClick(item.activleId)"
-        >
-          <n-ellipsis>
-            {{ item.activleTitle }}
-          </n-ellipsis>
-          <!-- <div class="sum">{{ index + 1 }}</div> -->
-        </li>
+        <ul class="body-ul">
+          <li
+            class="body-item"
+            v-for="(item, index) of hots"
+            :key="index"
+            @click="handleBlobTitleClick(item.activleId)"
+          >
+            <n-ellipsis>
+              {{ item.activleTitle }}
+            </n-ellipsis>
+            <!-- <div class="sum">{{ index + 1 }}</div> -->
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -80,6 +82,10 @@ export default {
       padding: 15px 10px;
 
       background-color: var(--home-hot-tags-card-background-color);
+
+      &-ul {
+        padding: 0px;
+      }
 
       &-item {
         text-align: left;

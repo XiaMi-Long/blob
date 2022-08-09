@@ -4,11 +4,17 @@
  * @Author: wwy
  * @Date: 2022-07-16 20:56:47
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-26 21:33:19
+ * @LastEditTime: 2022-08-08 15:54:28
 -->
 <template>
   <div class="article-option-box">
     <div class="content">
+      <n-tooltip trigger="hover">
+        <template #trigger>
+          <p>{{ readProgress }}%</p>
+        </template>
+        阅读进度
+      </n-tooltip>
       <n-tooltip trigger="hover">
         <template #trigger>
           <n-icon
@@ -88,9 +94,9 @@
 </template>
 
 <script>
-import { ref, computed, onUnmounted } from "vue";
+import { ref, computed, onUnmounted, onMounted } from "vue";
 import { useStore } from "vuex";
-import { hideHeader, showHeader } from "@/utils/common/index";
+import { hideHeader, showHeader, scrollProgress } from "@/utils/common/index";
 import { goDarkTheme, goLight } from "@/utils/common/api.js";
 import {
   MoonSharp,
@@ -120,9 +126,18 @@ export default {
     let isShowHeader = ref(false);
     // 现在页面内容放大到什么程度了
     let zoomLevel = ref(1);
+    // 阅读进度
+    let readProgress = ref(0);
 
     const nowDark = computed(() => store.state.isDark === true);
     const nowHide = computed(() => isShowHeader.value === true);
+
+    // 监听滚动事件
+    onMounted(() => {
+      window.addEventListener("scroll", () => {
+        readProgress.value = scrollProgress();
+      });
+    });
 
     // 本页面卸载前要恢复headere
     onUnmounted(() => {
@@ -132,6 +147,7 @@ export default {
     return {
       isShowHeader,
       zoomLevel,
+      readProgress,
       nowDark,
       nowHide,
       store,

@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 22:41:08
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-26 21:25:47
+ * @LastEditTime: 2022-08-08 16:06:47
 -->
 <template>
   <div class="menu">
@@ -41,21 +41,21 @@ export default {
           ),
         key: "home",
       },
-      {
-        label: () =>
-          h(
-            RouterLink,
-            {
-              to: {
-                name: "user",
-              },
-            },
-            {
-              default: () => "User",
-            }
-          ),
-        key: "user",
-      },
+      // {
+      //   label: () =>
+      //     h(
+      //       RouterLink,
+      //       {
+      //         to: {
+      //           name: "user",
+      //         },
+      //       },
+      //       {
+      //         default: () => "User",
+      //       }
+      //     ),
+      //   key: "user",
+      // },
     ];
     const activeKey = ref("");
     return {

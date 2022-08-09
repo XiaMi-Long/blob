@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-14 23:07:11
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-25 21:22:14
+ * @LastEditTime: 2022-08-08 16:03:20
  */
 
 /**
@@ -55,4 +55,16 @@ export function showHeader() {
  */
 export function deepCopy(obj) {
   return JSON.parse(JSON.stringify(obj));
+}
+
+/**
+ * @name: wwy
+ * @msg: 计算当前页面滚动条占页面高度的百分比
+ * 因为clientHeight会一直与pageYOffset的最大值差一个innerHeight(视口固定高度)
+ * @return {*} 百分比数
+ */
+export function scrollProgress() {
+  const height = parseInt(document.body.clientHeight - window.innerHeight, 10);
+  const scrollY = parseInt(window.pageYOffset, 10);
+  return parseInt((scrollY / height) * 100, 10);
 }

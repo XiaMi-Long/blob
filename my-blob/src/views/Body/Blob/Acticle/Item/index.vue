@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-12 10:58:19
  * @LastEditors: wwy
- * @LastEditTime: 2022-08-02 21:25:45
+ * @LastEditTime: 2022-08-09 21:39:04
 -->
 <template>
   <div class="blob-activle-text-box">
@@ -60,8 +60,14 @@
       <!-- 作者头像 -->
       <div class="avatar">
         <n-space>
-          <n-avatar lazy round size="large" :src="item.activleUserPhoto" />
-          HomeLeader
+          <n-avatar
+            lazy
+            round
+            size="large"
+            alt="头像"
+            :src="item.activleUserPhoto"
+          />
+          {{ item.activleAuthor }}
         </n-space>
       </div>
     </n-card>

@@ -4,13 +4,17 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-20 20:28:44
+ * @LastEditTime: 2022-08-08 17:55:33
 -->
 <template>
   <n-message-provider>
     <router-view></router-view>
   </n-message-provider>
 </template>
+
+<script>
+export default {};
+</script>
 
 <style lang="scss">
 #app {
