@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-08-08 17:27:41
+ * @LastEditTime: 2022-08-11 23:13:55
  */
 import { createApp } from "vue";
 import App from "./App.vue";
@@ -20,7 +20,6 @@ import {
   NButton,
   NImage,
   NSpace,
-  NMenu,
   NLayout,
   NIcon,
   NTime,
@@ -46,7 +45,6 @@ const naive = create({
     NButton,
     NSpace,
     NImage,
-    NMenu,
     NLayout,
     NIcon,
     NTime,

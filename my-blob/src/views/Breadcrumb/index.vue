@@ -4,35 +4,35 @@
  * @Author: wwy
  * @Date: 2022-07-11 15:56:14
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-26 21:27:11
+ * @LastEditTime: 2022-08-11 21:31:48
 -->
 <template>
   <div class="breadcrumb-container">
     <div class="logo-search">
-      <Logo></Logo>
-      <Input></Input>
+      <BreadcrumbLogo></BreadcrumbLogo>
+      <BreadcrumbInput></BreadcrumbInput>
     </div>
     <div class="page-title">
-      <Title></Title>
-      <Icon></Icon>
+      <BreadcrumbTitle></BreadcrumbTitle>
+      <BreadcrumbIcon></BreadcrumbIcon>
     </div>
   </div>
 </template>
 
 <script>
 // import { h } from "vue";
-import Logo from "./Logo/index.vue";
-import Input from "./Input/index.vue";
-import Title from "./Title/index.vue";
-import Icon from "./Icon/index.vue";
+import BreadcrumbLogo from "./Logo/index.vue";
+import BreadcrumbInput from "./Input/index.vue";
+import BreadcrumbTitle from "./Title/index.vue";
+import BreadcrumbIcon from "./Icon/index.vue";
 
 export default {
   name: "BreadcrumbView",
   components: {
-    Logo,
-    Input,
-    Title,
-    Icon,
+    BreadcrumbLogo,
+    BreadcrumbInput,
+    BreadcrumbTitle,
+    BreadcrumbIcon,
   },
 
   setup() {

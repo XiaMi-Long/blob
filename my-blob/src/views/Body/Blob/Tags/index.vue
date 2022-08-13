@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-12 17:28:00
  * @LastEditors: wwy
- * @LastEditTime: 2022-08-02 22:51:29
+ * @LastEditTime: 2022-08-11 20:55:39
 -->
 <template>
   <div class="blob-tags-view">
@@ -38,7 +38,7 @@
 
 <script>
 import { useStore } from "vuex";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { ClearRound } from "@vicons/material";
 export default {
   name: "BlobTagsView",
@@ -52,6 +52,8 @@ export default {
 
     const tagsArray = ref(store.getters.getTagsArray);
 
+    const stroeTagsArray = computed(() => store.state.searchParams.tags);
+
     const filterNoSelectTags = computed(() =>
       tagsArray.value.filter((item) => item.isShow)
     );
@@ -64,6 +66,15 @@ export default {
 
     tagsArray.value.forEach((item) => {
       item.isShow = true;
+    });
+
+    // 没有检索到内容时,清空选中状态
+    watch(stroeTagsArray, (newX) => {
+      if (newX.length === 0) {
+        tagsArray.value.forEach((item) => {
+          item.isShow = true;
+        });
+      }
     });
 
     return {

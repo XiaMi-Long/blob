@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-12 10:58:19
  * @LastEditors: wwy
- * @LastEditTime: 2022-08-10 00:44:38
+ * @LastEditTime: 2022-08-11 20:41:00
 -->
 <template>
   <div class="blob-activle-text-box">
@@ -143,6 +143,7 @@ export default {
 
     /* 回到最初的地方 */
     backSearchClick() {
+      this.store.commit("SET_TAGS", []);
       this.store.commit("SET_INPUT_VALUE", "");
       this.store.commit("SET_HOME_PAGE_OBJECT");
     },
