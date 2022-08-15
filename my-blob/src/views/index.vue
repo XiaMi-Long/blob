@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-08-13 15:24:21
+ * @LastEditTime: 2022-08-13 18:09:07
 -->
 <template>
   <n-config-provider :theme="isDark">
@@ -47,6 +47,10 @@ export default {
 
     // 执行博客文章展示数据初始化
     store.commit("SET_HOME_PAGE_OBJECT");
+    // 执行手机端判断
+    if (window.innerWidth < 800) {
+      store.commit("SET_PC", false);
+    }
 
     const getIsDark = computed(() => store.getters.getIsDark);
     const isDark = computed(() => {

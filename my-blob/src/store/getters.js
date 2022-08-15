@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-18 22:06:52
  * @LastEditors: wwy
- * @LastEditTime: 2022-08-02 21:34:19
+ * @LastEditTime: 2022-08-13 17:32:52
  */
 const getters = {
   getIsDark: (state) => state.isDark,
@@ -22,6 +22,9 @@ const getters = {
 
   /* 返回标签分类 */
   getTagsArray: () => window._tagsArray,
+
+  /* 返回歌曲数据 */
+  getSongArray: () => window._songArray,
 
   /* 返回热门文章前10条 */
   getHotBlob: (state) => {

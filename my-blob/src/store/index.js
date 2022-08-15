@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-08-02 22:49:14
+ * @LastEditTime: 2022-08-13 18:09:23
  */
 import { createStore } from "vuex";
 import { cssVarUtils, deepCopy } from "@/utils/common/index";
@@ -36,6 +36,10 @@ export default createStore({
       /* 文章分类 */
       tags: [],
     },
+    /* 当前正在播放歌曲id */
+    currentPlaySongId: "",
+    /* 当前是否不是pc端,宽度小于800 */
+    isPc: true,
   },
   getters,
   mutations: {
@@ -54,6 +58,11 @@ export default createStore({
         setCssVar.setVar("--home-hot-tags-card-background-color", "#ffffff");
         setCssVar.setVar("--home-tags-card-item-background-color", "#b1b8bb");
       }
+    },
+
+    /* 设置是否是手机端 */
+    SET_PC(state, value) {
+      state.isPc = value;
     },
 
     /* 设置固定菜单之后的全局样式更改 */
@@ -83,6 +92,15 @@ export default createStore({
     /* 设置页码 */
     SET_ACTIVLE_PAGE_NO(state, value) {
       state.homePageObject.pageNo = value;
+    },
+
+    /* 设置当前正在播放的歌曲id */
+    SET_CURRENT_PLAY_SONG_ID(state, value) {
+      //如果两次值是一样的
+      if (state.currentPlaySongId === value) {
+        return;
+      }
+      state.currentPlaySongId = value;
     },
 
     /* 更新homePageObject状态 */

@@ -4,12 +4,17 @@
  * @Author: wwy
  * @Date: 2022-08-11 21:39:25
  * @LastEditors: wwy
- * @LastEditTime: 2022-08-13 16:04:59
+ * @LastEditTime: 2022-08-13 18:14:05
 -->
 <template>
   <div class="music-view">
     <MusicCardView>
-      <div class="audio-play">
+      <div
+        class="audio-play"
+        :style="{
+          'background-image': `url(${audioPlayBackgroundImage})`,
+        }"
+      >
         <div
           class="function-bar"
           :style="{ 'background-color': functionBarBackground }"
@@ -59,9 +64,9 @@
             <div class="end-time">{{ audioDuration }}</div>
           </div>
         </div>
-        <audio id="audioPlayer">
+        <audio id="audioPlayer" :src="audioSrc">
           <!-- <source src="source/One more time.mp3" type="audio/mp3"> -->
-          <source src="@/assets/source/mp3/callme.mp3" type="audio/mp3" />
+          <!-- <source src="@/assets/source/mp3/callme.mp3" type="audio/mp3" /> -->
           您的浏览器不支持 audio 元素。
         </audio>
       </div>
@@ -75,23 +80,37 @@ import { Add24Regular, Play28Regular, Pause16Regular } from "@vicons/fluent";
 import { RemoveSharp } from "@vicons/material";
 import { VolumeLowOutline } from "@vicons/ionicons5";
 
+import { useStore } from "vuex";
 import { ref, onMounted, inject, watch, nextTick } from "vue";
 import { useMessage } from "naive-ui";
 
 const { isOpenMusicDialog } = inject("isOpenMusicDialog");
 
+const store = useStore();
 const message = useMessage();
 
+let audioSrc = ref("");
 let audio = null;
 let bottomLoad = null;
 let topLoad = null;
 let loadIcon = null;
 let positionRelative = null;
 let isPlaying = ref(false);
-let functionBarBackground = ref("#1e253a");
+let functionBarBackground = ref("");
+let audioPlayBackgroundImage = ref("");
 let audioVolume = ref(0);
 let audioCurrentTime = ref("0:00");
 let audioDuration = ref("0:00");
+
+//初始化默认歌曲url
+const songArray = store.getters.getSongArray;
+audioSrc.value = songArray[0].songUrl;
+functionBarBackground.value = songArray[0].songThemeColor;
+audioPlayBackgroundImage.value = songArray[0].songImageUrl;
+console.log();
+
+// 更新vuex全局正在播放的歌曲id
+store.commit("SET_CURRENT_PLAY_SONG_ID", songArray[0].songId);
 
 watch(isOpenMusicDialog, async (newValue) => {
   // 在页面重新展示的时候,重新获取dom的getBoundingClientRect
@@ -100,13 +119,30 @@ watch(isOpenMusicDialog, async (newValue) => {
     positionRelative = bottomLoad.getBoundingClientRect();
   }
 });
+
+watch(
+  () => store.state.currentPlaySongId,
+  async (newValue) => {
+    const songInfo = filterSongId(newValue);
+    audioPlayBackgroundImage.value = songInfo[0].songImageUrl;
+    functionBarBackground.value = songInfo[0].songThemeColor;
+    audioSrc.value = songInfo[0].songUrl;
+
+    // 重置播放图标
+    isPlaying.value = true;
+
+    await nextTick();
+    // 歌曲播放
+    audio.play();
+  }
+);
+
 onMounted(() => {
   audio = document.getElementById("audioPlayer");
   bottomLoad = document.getElementById("bottom-loading");
   topLoad = document.getElementById("top-loading");
   loadIcon = document.getElementById("loading-icon");
   positionRelative = bottomLoad.getBoundingClientRect();
-  console.log(positionRelative);
   init();
 });
 
@@ -230,6 +266,11 @@ function computePositionTime(event) {
   const progressClickTime = (clickWidth / maxWidth).toFixed(2);
   audio.currentTime = parseInt(audio.duration * progressClickTime, 10);
 }
+
+// 返回选定歌曲id的歌曲信息对象
+function filterSongId(id) {
+  return songArray.filter((item) => item.songId === id);
+}
 </script>
 
 <style lang="scss" scoped>
@@ -237,11 +278,7 @@ function computePositionTime(event) {
   width: 100%;
   height: 100%;
 
-  background-color: #f3bb00;
-
   box-shadow: 0 0 12px black;
-
-  background-image: url("@/assets/images/1.jpg");
 
   background-size: 100% 100%;
 

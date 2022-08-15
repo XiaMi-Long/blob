@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-08-11 23:13:55
+ * @LastEditTime: 2022-08-13 16:31:23
  */
 import { createApp } from "vue";
 import App from "./App.vue";
@@ -38,6 +38,7 @@ import {
   NMessageProvider,
   NSkeleton,
   NProgress,
+  NScrollbar,
 } from "naive-ui";
 
 const naive = create({
@@ -63,6 +64,7 @@ const naive = create({
     NMessageProvider,
     NSkeleton,
     NProgress,
+    NScrollbar,
   ],
 });
 

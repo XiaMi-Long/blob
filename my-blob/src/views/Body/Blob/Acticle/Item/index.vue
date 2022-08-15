@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-12 10:58:19
  * @LastEditors: wwy
- * @LastEditTime: 2022-08-11 20:41:00
+ * @LastEditTime: 2022-08-13 18:15:23
 -->
 <template>
   <div class="blob-activle-text-box">
@@ -122,7 +122,7 @@ export default {
       const imgs = document.querySelectorAll("img");
       imgs.forEach((item) => {
         item.addEventListener("error", function () {
-          this.src = "img/activle-images/404.jpg";
+          this.src = "img/system-images/loading.jpg";
         });
       });
     };

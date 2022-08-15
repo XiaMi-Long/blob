@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 16:04:17
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-28 15:30:27
+ * @LastEditTime: 2022-08-13 18:11:25
 -->
 <template>
   <div>
@@ -19,6 +19,7 @@
           @title-click="handleBlobTitleClick"
         ></BlobHotView>
         <BlobTagsView></BlobTagsView>
+        <BlobSongView v-if="isHaveSong && isPc"></BlobSongView>
       </n-gi>
     </n-grid>
     <n-grid x-gap="0" :cols="24">
@@ -35,6 +36,7 @@
 </template>
 
 <script>
+import BlobSongView from "./Song/BlobSongView.vue";
 import BlobTitleView from "./Title/index.vue";
 import BlobActivleView from "./Acticle/index.vue";
 import BlobHotView from "./Hot/index.vue";
@@ -47,6 +49,7 @@ import { useStore } from "vuex";
 export default {
   name: "BlobHomeView",
   components: {
+    BlobSongView,
     BlobTitleView,
     BlobActivleView,
     BlobHotView,
@@ -57,8 +60,12 @@ export default {
   setup() {
     const store = useStore();
 
+    const songArray = store.getters.getSongArray;
+
     return {
       store,
+      isHaveSong: computed(() => songArray.length > 0),
+      isPc: computed(() => store.state.isPc),
       hotsBlob: computed(() => store.getters.getHotBlob),
       pageNo: computed(() => store.getters.getHomePageNo),
       pageSum: computed(() => store.getters.getHomePageSum),
