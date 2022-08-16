@@ -153,3 +153,7 @@ window._songArray = [
     songThemeColor: "#38446a",
   },
 ];
+
+window._songWordArray = {
+  1: {},
+};

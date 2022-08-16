@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 22:41:08
  * @LastEditors: wwy
- * @LastEditTime: 2022-08-13 18:10:34
+ * @LastEditTime: 2022-08-16 14:50:46
 -->
 <template>
   <div class="menu">
@@ -13,6 +13,16 @@
         <span class="item" @click="goHome">首页</span>
         <span class="item" @click="openMusicDialog" v-if="isHaveSong && isPc"
           >音乐</span
+        >
+        <span class="item" @click="goAbout">关于本站</span>
+        <span class="item"
+          ><a
+            href="https://github.com/XiaMi-Long/blob/tree/master"
+            class="github-link"
+            target="_blank"
+          >
+            Github</a
+          ></span
         >
       </div>
     </n-space>
@@ -52,6 +62,10 @@ function setIsOpenMusicDialogValue() {
   isOpenMusicDialog.value = false;
 }
 
+function goAbout() {
+  router.push(`/article/关于本站`);
+}
+
 const isHaveSong = computed(() => songArray.length > 0);
 const isPc = computed(() => store.state.isPc);
 provide("isOpenMusicDialog", { isOpenMusicDialog, setIsOpenMusicDialogValue });
@@ -71,6 +85,15 @@ provide("isOpenMusicDialog", { isOpenMusicDialog, setIsOpenMusicDialogValue });
         color: #12b697;
       }
     }
+  }
+}
+.github-link {
+  text-decoration: none;
+
+  color: var(--n-text-color);
+
+  &:hover {
+    color: #12b697;
   }
 }
 </style>

@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 17:08:56
  * @LastEditors: wwy
- * @LastEditTime: 2022-08-09 21:42:06
+ * @LastEditTime: 2022-08-16 14:43:05
 -->
 <template>
   <div class="logo">
@@ -34,7 +34,7 @@ export default {
     width: 50px;
     height: 50px;
 
-    border-radius: 5px;
+    border-radius: 50%;
   }
 }
 </style>

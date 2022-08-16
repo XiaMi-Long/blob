@@ -4,7 +4,7 @@
     * @Author: wwy
     * @Date: 2022-07-13 22:14:26
  * @LastEditors: wwy
- * @LastEditTime: 2022-08-10 01:21:18
+ * @LastEditTime: 2022-08-16 14:39:26
     -->
 <!--
     * @Descripttion: 
@@ -211,6 +211,8 @@ export default {
   background-color: var(--article-background-color);
 
   padding: 0px 10% 40px 10%;
+
+  min-height: 90vh;
   .content {
     padding: 30px 80px;
 
