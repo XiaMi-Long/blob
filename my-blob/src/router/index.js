@@ -4,16 +4,13 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-07-18 22:37:01
+ * @LastEditTime: 2022-08-16 15:57:14
  */
 import { createRouter, createWebHistory } from "vue-router";
 import Index from "../views/index.vue";
 
 /**
  * keepAlive:页面是否缓存
- *
- *
- *
  */
 const routes = [
   {
@@ -54,6 +51,21 @@ const routes = [
       {
         path: "article/:id",
         name: "article",
+        components: {
+          main: () =>
+            import(
+              /* webpackChunkName: "ArticleIndex" */ "@/views/Body/Article/index.vue"
+            ),
+          BreadcrumbView: () =>
+            import(
+              /* webpackChunkName: "Breadcrumb" */ "@/views/Breadcrumb/index.vue"
+            ),
+        },
+        meta: { keepAlive: false },
+      },
+      {
+        path: "about/:id",
+        name: "about",
         components: {
           main: () =>
             import(

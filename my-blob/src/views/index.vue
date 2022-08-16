@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-08-13 18:09:07
+ * @LastEditTime: 2022-08-16 15:56:27
 -->
 <template>
   <n-config-provider :theme="isDark">
@@ -20,6 +20,8 @@
           <router-view
             class="view main-content"
             name="main"
+            :class="key"
+            :key="key"
             v-slot="{ Component }"
           >
             <keep-alive :include="notKeepAlivePageArray">
@@ -37,6 +39,7 @@ import { darkTheme } from "naive-ui";
 import { computed } from "vue";
 import { useStore } from "vuex";
 import { notKeepAlivePageArray } from "@/router/index.js";
+import { useRoute } from "vue-router";
 
 export default {
   name: "HomeView",
@@ -44,6 +47,7 @@ export default {
 
   setup() {
     const store = useStore();
+    const route = useRoute();
 
     // 执行博客文章展示数据初始化
     store.commit("SET_HOME_PAGE_OBJECT");
@@ -56,8 +60,17 @@ export default {
     const isDark = computed(() => {
       return getIsDark.value ? darkTheme : null;
     });
+    // 对关于本站路由的页面加载新的实例,防止组件复用,导致页面无变化
+    const key = computed(() => {
+      if (route.name !== "about") {
+        return "";
+      } else {
+        return "about";
+      }
+    });
 
     return {
+      key,
       isDark,
       notKeepAlivePageArray,
     };

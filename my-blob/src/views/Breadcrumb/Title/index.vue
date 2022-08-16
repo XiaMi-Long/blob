@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 22:41:08
  * @LastEditors: wwy
- * @LastEditTime: 2022-08-16 14:50:46
+ * @LastEditTime: 2022-08-16 15:53:30
 -->
 <template>
   <div class="menu">
@@ -63,7 +63,7 @@ function setIsOpenMusicDialogValue() {
 }
 
 function goAbout() {
-  router.push(`/article/关于本站`);
+  router.push(`/about/关于本站`);
 }
 
 const isHaveSong = computed(() => songArray.length > 0);
