@@ -90,6 +90,45 @@ window._activleArray = [
     activleAuthor: "洛琪希",
     activleUserPhoto: "img/user-images/wwy.webp",
   },
+  {
+    activleId: "kingbase基本操作",
+    isHot: false,
+    tags: [12],
+    activlePhoto:
+      "http://rfzvqtsnl.hn-bkt.clouddn.com/kingbase%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%2Fsrc%3Dhttp___www.pianshen.com_images_985_44d2a819ab8337ff7145f7e61476b0a9.png%26refer%3Dhttp___www.pianshen.webp",
+    activleTitle: "kingbase基本操作",
+    activleTime: new Date(2022, 7, 18).getTime(),
+    activleTag: "kingbase",
+    activleBody: `kingbase基本操作`,
+    activleAuthor: "伯伯洋",
+    activleUserPhoto: "img/user-images/auth1.png",
+  },
+  {
+    activleId: "MariaDB主从备份",
+    isHot: false,
+    tags: [13],
+    activlePhoto:
+      "http://rfzvqtsnl.hn-bkt.clouddn.com/MariaDB%E4%B8%BB%E4%BB%8E%E5%A4%87%E4%BB%BD%2F6c8062457083eb0447614bde0a4f761d.jpeg",
+    activleTitle: "MariaDB主从备份",
+    activleTime: new Date(2022, 6, 25).getTime(),
+    activleTag: "MariaDB",
+    activleBody: `MariaDB主从备份`,
+    activleAuthor: "伯伯洋",
+    activleUserPhoto: "img/user-images/auth1.png",
+  },
+  {
+    activleId: "SpringBoot整合云OSS",
+    isHot: true,
+    tags: [4, 11],
+    activlePhoto:
+      "http://rfzvqtsnl.hn-bkt.clouddn.com/SpringBoot%E6%95%B4%E5%90%88%E4%BA%91OSS%2F7b30ddc9652bde5d6f0bfbfbce20dd26.jpeg",
+    activleTitle: "SpringBoot整合云OSS",
+    activleTime: new Date(2022, 6, 25).getTime(),
+    activleTag: "SpringBoot",
+    activleBody: `SpringBoot整合云OSS`,
+    activleAuthor: "伯伯洋",
+    activleUserPhoto: "img/user-images/auth1.png",
+  },
 ];
 
 window._tagsArray = [
@@ -122,12 +161,20 @@ window._tagsArray = [
     id: 9,
   },
   {
-    label: "前端BUG",
+    label: "前端",
     id: 10,
   },
   {
-    label: "后端BUG",
+    label: "后端",
     id: 11,
+  },
+  {
+    label: "kingbase",
+    id: 12,
+  },
+  {
+    label: "MariaDB",
+    id: 13,
   },
 ];
 

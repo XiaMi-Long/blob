@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-08-11 21:39:25
  * @LastEditors: wwy
- * @LastEditTime: 2022-08-13 18:14:05
+ * @LastEditTime: 2022-08-19 16:34:27
 -->
 <template>
   <div class="music-view">
@@ -107,7 +107,6 @@ const songArray = store.getters.getSongArray;
 audioSrc.value = songArray[0].songUrl;
 functionBarBackground.value = songArray[0].songThemeColor;
 audioPlayBackgroundImage.value = songArray[0].songImageUrl;
-console.log();
 
 // 更新vuex全局正在播放的歌曲id
 store.commit("SET_CURRENT_PLAY_SONG_ID", songArray[0].songId);

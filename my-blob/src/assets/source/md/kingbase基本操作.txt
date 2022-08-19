@@ -1,0 +1,81 @@
+1、切换使用kingbase
+
+su - kingbase
+
+2、查看版本信息
+kingbase -V
+
+3、查看54321端口使用情况
+netstat -an|grep 54321
+
+4、查看kingbase的进程
+ps aux |grep Kingbase
+ps -ef|grep kingbase
+
+5、启动数据库
+
+在linux安装路径下的Server下的bin下。
+
+输入格式为 …/kingbase -D 安装路径或者./kingbase -D 安装路径&
+./kingbase -D /usr/local/kingbase/data
+./kingbase -D /opt/Kingbase/ES/V7/data&
+
+6、连接
+
+格式为:./ksql -U账号名称 -W密码 -p端口 数据库名称
+./ksql -USYSTEM -W123456 -p54321 TEST
+
+7、 创建用户
+
+格式为：CREATE USER 账号名称 CONNECTION LIMIT - 1 PASSWORD ‘密码’;
+CREATE USER cs CONNECTION LIMIT - 1 PASSWORD ‘123456’;
+
+8、赋予角色
+
+格式为：ALTER USER 账号 角色;
+
+ALTER USER cs SUPERUSER;
+
+ALTER USER cs CREATEDB;
+
+ALTER USER cs CREATEROLE;
+
+ALTER USER cs LOGIN;
+
+ALTER USER cs REPLICATION;
+
+9、创建数据库
+
+格式为：create database 数据库名称 with owner=‘账号名称’ ENCODING UTF8;
+create database testgov with owner=‘SYSTEM’ ENCODING UTF8;
+
+10、逻辑备份
+
+格式为：./sys_dump -h ip地址 -p 端口号 -U 账户名称 -W密码 -f dmp文件存在路径 要导入的数据库名称 或./sys_dumpall -h ip地址 -p 端口号 -U 账户名称 -W密码 -f dmp文件存在路径 要导入的数据库名称
+./sys_dump -h 192.168.1.8 -p 54321 -U SYSTEM -W MANAGER -f /home/KingbaseES/V8R3/bin/dumpfile.dmp TEST
+
+./sys_dumpall -h 192.168.1.8 -p 54321 -U SYSTEM -W MANAGER -f /home/KingbaseES/V8R3/bin/dumpfile.dmp TEST
+
+11、还原备份文件中的所有内容
+
+格式为:./ksql -h ip地址 -U账号 -W密码-d数据库名称 -p端口号 -f dmp文件存在路径
+./ksql -h 192.168.1.8 -USYSTEM -WSYSTEM -dDEMO2 -p54321 -f G:\2020\bak\dumpfile.dmp
+./sys_restore -h 192.168.1.8 -p 54321 -U SYSTEM -W MANAGER -d TEST2 c:\dumpfile.dmp
+
+12、查看所有的数据库与所有的用户
+select datname from sys_database;
+select * from sys_user;
+
+13、其他
+列出数据库: \l
+列出索引: \di
+列出表： \dt
+列出表结构：\d 表
+查询数据大小写敏感： show case_sensitive
+切换数据库： \c dbname
+显示字符集：\encoding
+退出：\q
+查看所有存储过程（函数）: \df
+查看所有用户 \du
+将名下的表指给某个用户：alter table 表名 owner to 指定用戶
+创建普通用户：create user 用户名（用户名不带双引号，默认大写） with password ‘密码’; 若创建超级用户需要添加：with superuser password ‘mm’；

@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-08-16 15:57:14
+ * @LastEditTime: 2022-08-19 16:27:06
  */
 import { createRouter, createWebHistory } from "vue-router";
 import Index from "../views/index.vue";
@@ -94,6 +94,7 @@ const getKeepAliveValue = function (obj) {
     });
   }
 };
+
 routes.forEach((item) => {
   getKeepAliveValue(item);
 });

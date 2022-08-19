@@ -4,12 +4,12 @@
  * @Author: wwy
  * @Date: 2022-07-11 17:08:56
  * @LastEditors: wwy
- * @LastEditTime: 2022-08-16 14:43:05
+ * @LastEditTime: 2022-08-19 16:34:40
 -->
 <template>
   <div class="logo">
     <router-link to="/home">
-      <img src="img/system-images/logo.jpg" alt="头像" class="logo-img" />
+      <img src="img/system-images/logo.webp" alt="头像" class="logo-img" />
     </router-link>
   </div>
 </template>

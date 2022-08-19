@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-08-11 21:37:36
  * @LastEditors: wwy
- * @LastEditTime: 2022-08-13 16:15:41
+ * @LastEditTime: 2022-08-19 16:30:35
 -->
 <template>
   <div class="music-card-view">
@@ -51,7 +51,7 @@ const { isOpenMusicDialog, setIsOpenMusicDialogValue } =
   align-items: center;
 }
 .music-card {
-  width: 80%;
+  width: 800px;
   height: 650px;
 
   color: white;

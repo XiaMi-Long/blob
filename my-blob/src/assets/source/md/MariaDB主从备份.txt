@@ -1,0 +1,226 @@
+# MariaDB主从备份
+
+## mariadb常用操作
+
+```shell
+#停止服务
+[root@backdb02 mysql]# systemctl stop mariadb.service
+#开启服务
+[root@backdb02 mysql]# systemctl start mariadb.service
+#查看状态
+[root@backdb02 mysql]# systemctl status mariadb.service
+```
+
+## 1、首先再备份机器上安装相同版本的数据库
+
+本次安装采用rpm 包进行安装
+
+```shell
+#相关的包地址
+Index of /centos/7/os/x86_64/Packages/ (aliyun.com)
+Index of /mariadb/mariadb-10.6.4/yum/centos/7/x86_64/rpms/ | 清华大学开源软件镜像站 | Tsinghua Open Source Mirror
+
+boost-program-options-1.53.0-27.el7.x86_64.rpm
+galera-4-26.4.3-1.rhel7.el7.centos.x86_64.rpm
+MariaDB-client-10.4.11-1.el7.centos.x86_64.rpm
+MariaDB-common-10.4.11-1.el7.centos.x86_64.rpm
+MariaDB-compat-10.4.11-1.el7.centos.x86_64.rpm
+MariaDB-server-10.4.11-1.el7.centos.x86_64.rpm
+perl-Compress-Raw-Bzip2-2.061-3.el7.x86_64.rpm
+perl-Compress-Raw-Zlib-2.061-4.el7.x86_64.rpm
+perl-Data-Dumper-2.145-3.el7.x86_64.rpm
+perl-DBI-1.627-4.el7.x86_64.rpm
+perl-IO-Compress-2.061-2.el7.noarch.rpm
+perl-Net-Daemon-0.48-5.el7.noarch.rpm
+perl-PlRPC-0.2020-14.el7.noarch.rpm
+
+查看是否安装了老版本的mysql
+rpm -qa|grep mariadb-libs
+
+如果存在，请先卸载
+rpm -e mariadb-libs-5.5.64-1.el7.x86_64 --nodeps
+
+将RPM包上传至centos服务器，CD到RPM包所在路径执行安装
+yum localinstall *.rpm -y
+
+启动mariadb服务
+systemctl start mariadb
+
+ ln -s /var/lib/mysql/mysql.sock /tmp/mysql.sock
+
+设置root帐号密码
+mysqladmin -u root password 123456
+登录数据库，开启远程访问权限
+mysql -uroot -p123456
+grant all privileges on *.* to 'root'@'%' identified by '123456' with grant option;
+flush privileges;
+exit
+
+
+设置mariadb开机启动
+systemctl list-unit-files | grep mariadb
+systemctl enable mariadb
+
+关闭防火墙
+systemctl stop firewalld
+systemctl disable firewalld
+```
+
+## 2、安装完成后需要对主服务器的数据库配置文件进行修改
+
+1、修改主数据库的服务器配置具体配置如下：
+
+```shell
+# vim /etc/my.cnf
+[mysqld]
+datadir=/var/lib/mysql
+socket=/var/lib/mysql/mysql.sock
+user=maria
+# Disabling symbolic-links is recommended to prevent assorted security risks
+symbolic-links=0
+log-bin=maria-bin 
+server-id=100
+binlog_format=mixed
+
+# Settings user and group are ignored when systemd is used.
+# If you need to run mysqld under a different user or group,
+# customize your systemd unit file for mariadb according to the
+# instructions in http://fedoraproject.org/wiki/Systemd
+
+[mysqld_safe]
+log-error=/var/log/mariadb/mariadb.log
+pid-file=/var/run/mariadb/mariadb.pid
+
+#
+# include all files from the config directory
+#
+!includedir /etc/my.cnf.d
+
+```
+
+2、修改从数据的配置如下配置
+
+```shell
+]# vim /etc/my.cnf
+[mysqld]
+datadir=/var/lib/mysql
+socket=/var/lib/mysql/mysql.sock
+user=maria
+# Disabling symbolic-links is recommended to prevent assorted security risks
+symbolic-links=0
+log-bin=maria-bin
+server-id=101
+# Settings user and group are ignored when systemd is used.
+# If you need to run mysqld under a different user or group,
+# customize your systemd unit file for mariadb according to the
+# instructions in http://fedoraproject.org/wiki/Systemd
+
+[mysqld_safe]
+log-error=/var/log/mariadb/mariadb.log
+pid-file=/var/run/mariadb/mariadb.pid
+
+#
+# include all files from the config directory
+#
+!includedir /etc/my.cnf.d
+
+```
+
+3、修改配置后重启Master和Slave的mariadb服务
+
+```shell
+[root@cdh001 ~]# systemctl restart mariadb.service
+
+```
+
+## 3、构建主从复制
+
+1. 在master主MariaDB上创建一个slave_trs用户，用户名：slave_trs密码：trs@admin123，从节点也做相同配置，方便以后从master远程同样使用slave_trs用户访问slave
+
+```sql
+create user 'slave_trs'@'10.20.0.145' identified by 'trs@admin123';
+MariaDB [(none)]> GRANT REPLICATION SLAVE ON *.* TO 'slave_trs'@'10.20.0.145' IDENTIFIED BY 'trs@admin123'; 
+Query OK, 0 rows affected (0.00 sec)
+
+MariaDB [(none)]> FLUSH PRIVILEGES;
+Query OK, 0 rows affected (0.01 sec)
+
+```
+
+2.查看Master上MariaDB二进制日志File与Position
+
+```sql
+MariaDB [(none)]> show master status;
++------------------+----------+--------------+------------------+
+| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB |
++------------------+----------+--------------+------------------+
+| maria-bin.000001 |     2090 |              |                  |
++------------------+----------+--------------+------------------+
+1 row in set (0.00 sec)
+
+```
+
+3.在Slave从MariaDB上执行如下SQL，注意配置参数和2中的值要对应，每个人的都不一样
+
+```sql
+MariaDB [(none)]> change master to
+    -> master_host='10.20.0.145',
+    -> master_user='slave_trs',
+    -> master_password='trs@admin123',
+    -> master_log_file='maria-bin.000001',
+    -> master_log_pos=2090;
+Query OK, 0 rows affected (0.01 sec)
+
+```
+
+## 4、同步数据库
+
+主数据库中的数据如果可有可无，那么就可以不用处理，如果是重要数据，就需要在启动主从备份前先将数据完整备份到从数据库，使主从保持数据一致。
+
+1、锁定数据库，防止备份过程中数据写入
+
+```sql
+MariaDB [(none)]> flush tables with read lock;
+Query OK, 0 rows affected (0.00 sec)
+
+```
+
+2、通过Maria主服务器上的全备初始化从服务器上数据
+
+```sql
+[root@cdh001 /]# mkdir -p /data/db_backup
+[root@cdh001 /]# cd /data/db_backup
+[root@cdh001 db_backup]# mysqldump -uroot -p --master-data=1 --single-transaction --routines --triggers --events --all-databases >all.sql
+Enter password: 
+[root@cdh001 db_backup]# ls
+all.sql
+
+```
+
+3、解锁数据库表
+
+```sql
+MariaDB [(none)]> unlock tables;
+Query OK, 0 rows affected (0.00 sec)
+```
+
+4、把得到的数据库文件在从库中重新跑一遍即可
+
+```shell
+MariaDB [wom]> source < [具体路径] all.sql
+
+```
+
+5、启动主从同步
+
+```sql
+start slave  #开启
+stop slave  #关闭
+unset slave #取消
+
+```
+
+在Slave从MariaDB上执行命令，启动同步并查看状态，以下两个参数为yes则表示主从复制构建成功
+Slave_IO_Running: Yes
+Slave_SQL_Running: Yes
+这时在master上执行的操作就会同步到slave上了。
