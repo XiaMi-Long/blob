@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-12 17:28:00
  * @LastEditors: wwy
- * @LastEditTime: 2022-08-11 20:55:39
+ * @LastEditTime: 2022-08-19 17:25:07
 -->
 <template>
   <div class="blob-tags-view">
@@ -52,7 +52,7 @@ export default {
 
     const tagsArray = ref(store.getters.getTagsArray);
 
-    const stroeTagsArray = computed(() => store.state.searchParams.tags);
+    const storedTagsArray = computed(() => store.state.searchParams.tags);
 
     const filterNoSelectTags = computed(() =>
       tagsArray.value.filter((item) => item.isShow)
@@ -68,8 +68,17 @@ export default {
       item.isShow = true;
     });
 
+    // 检查是否已经有选中的
+    if (storedTagsArray.value.length !== 0) {
+      tagsArray.value.forEach((item) => {
+        if (storedTagsArray.value.includes(item.id)) {
+          item.isShow = false;
+        }
+      });
+    }
+
     // 没有检索到内容时,清空选中状态
-    watch(stroeTagsArray, (newX) => {
+    watch(storedTagsArray, (newX) => {
       if (newX.length === 0) {
         tagsArray.value.forEach((item) => {
           item.isShow = true;

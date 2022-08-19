@@ -4,8 +4,10 @@
  * @Author: wwy
  * @Date: 2022-07-18 22:06:52
  * @LastEditors: wwy
- * @LastEditTime: 2022-08-13 17:32:52
+ * @LastEditTime: 2022-08-19 17:20:41
  */
+import { deepCopy } from "@/utils/common/index.js";
+
 const getters = {
   getIsDark: (state) => state.isDark,
 
@@ -21,10 +23,10 @@ const getters = {
   getHomePageSum: (state) => state.homePageObject.pageSum,
 
   /* 返回标签分类 */
-  getTagsArray: () => window._tagsArray,
+  getTagsArray: () => deepCopy(window._tagsArray),
 
   /* 返回歌曲数据 */
-  getSongArray: () => window._songArray,
+  getSongArray: () => deepCopy(window._songArray),
 
   /* 返回热门文章前10条 */
   getHotBlob: (state) => {

@@ -4,7 +4,7 @@
  * @Author: wwy
  * @Date: 2022-07-11 10:44:27
  * @LastEditors: wwy
- * @LastEditTime: 2022-08-13 18:09:23
+ * @LastEditTime: 2022-08-19 17:05:12
  */
 import { createStore } from "vuex";
 import { cssVarUtils, deepCopy } from "@/utils/common/index";
@@ -150,6 +150,8 @@ export default createStore({
       if (isSearchFilter) {
         home.pageSum = Math.ceil(home.showActivleArray.length / home.pageTotal);
       }
+
+      home.pageNo = 1;
     },
   },
   actions: {},
