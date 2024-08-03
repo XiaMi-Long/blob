@@ -40,12 +40,14 @@ module.exports = defineConfig({
       {
         patterns: [
           { from: "src/assets/source/md", to: "doc" },
+          { from: "src/assets/source/mp3", to: "music" },
           {
             from: "src/assets/images/activle-images",
             to: "img/activle-images",
           },
           { from: "src/assets/images/user-images", to: "img/user-images" },
           { from: "src/assets/images/system-images", to: "img/system-images" },
+          { from: "src/assets/images/song-images", to: "img/song-images" },
           { from: "public/config.js", to: "" },
           { from: "public/favicon.ico", to: "" },
           { from: "public/robots.txt", to: "" },

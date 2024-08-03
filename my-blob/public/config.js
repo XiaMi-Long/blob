@@ -182,21 +182,21 @@ window._songArray = [
   {
     songId: "1",
     songUrl:
-      "http://rfzvqtsnl.hn-bkt.clouddn.com/%E9%9F%B3%E4%B9%90/OneMoreTime/One%20more%20time.mp3",
+      "music/One more time.mp3",
     songName: "One more time",
     songAuthor: "山崎まさよし",
     songImageUrl:
-      "http://rfzvqtsnl.hn-bkt.clouddn.com/%E9%9F%B3%E4%B9%90/OneMoreTime/wallhaven-k7rj2q.jpg",
+      "img/song-images/1.jpg",
     songThemeColor: "#be7e98",
   },
   {
     songId: "2",
     songUrl:
-      "http://rfzvqtsnl.hn-bkt.clouddn.com/%E9%9F%B3%E4%B9%90/callme/callme.mp3",
+      "music/callme.mp3",
     songName: "callme",
     songAuthor: "90sFlav",
     songImageUrl:
-      "http://rfzvqtsnl.hn-bkt.clouddn.com/%E9%9F%B3%E4%B9%90/callme/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20220813171726.jpg",
+      "img/song-images/2.jpg",
     songThemeColor: "#38446a",
   },
 ];
